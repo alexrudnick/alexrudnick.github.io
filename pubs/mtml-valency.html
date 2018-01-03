@@ -1,0 +1,194 @@
+<!doctype html>
+<html>
+<meta name="GENERATOR" content="TtH 3.85">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <style type="text/css"> div.p { margin-top: 7pt;}</style>
+ <style type="text/css"><!--
+ td div.comp { margin-top: -0.6ex; margin-bottom: -1ex;}
+ td div.comb { margin-top: -0.6ex; margin-bottom: -.6ex;}
+ td div.hrcomp { line-height: 0.9; margin-top: -0.8ex; margin-bottom: -1ex;}
+ td div.norm {line-height:normal;}
+ span.roman {font-family: serif; font-style: normal; font-weight: normal;} 
+ span.overacc2 {position: relative;  left: .8em; top: -1.2ex;}
+ span.overacc1 {position: relative;  left: .6em; top: -1.2ex;} --></style>
+
+<style>
+  body {
+    margin-left: 6em;
+    margin-right: 6em;
+  }
+</style>
+
+<title> A resource-light approach to learning verb valencies</title>
+ 
+<h1 align="center">A resource-light approach to learning verb valencies </h1>
+
+<div class="p"><!----></div>
+
+<h3 align="center">Alex Rudnick<br />
+  School of Informatics and Computing, Indiana University <br />
+  Bloomington, Indiana, USA<br />
+  <tt>alexr@cs.indiana.edu</tt>  </h3>
+
+<div class="p"><!----></div>
+
+<h3 align="center"> </h3>
+
+<div class="p"><!----></div>
+ 
+<h2> Abstract</h2>
+Here we describe a work-in-progress approach for learning valencies of
+verbs in a morphologically rich language using only a morphological analyzer
+and an unannotated corpus. We will compare the results from applying this
+approach to an unannotated Arabic corpus with those achieved by processing the
+same text in treebank form. The approach will then be applied to an unannotated
+corpus from Quechua, a morphologically rich but resource-scarce language.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc1">
+1</a>&nbsp;&nbsp;Introduction and approach</h2>
+When constructing NLP systems for a new language, we often want to know the
+valence of its verbs, which is to say how many and which types of arguments
+each verb may combine with. This information is especially helpful in
+constructing stochastic parsers [<a href="#przepiorkowski" name="CITEprzepiorkowski">7</a>]. Some dictionaries may
+provide such information, but even assuming that a broad-coverage digital
+dictionary exists for a given language, that dictionary may not say whether
+arguments are optional for a given verb, or how often they occur.
+
+<div class="p"><!----></div>
+An empirical approach based on a corpus or treebank allows us to learn the
+relative frequency with which a given verb takes specific types of arguments.
+As a simple example from English, we would like to learn that while "eat"
+usually has a direct object, "put" nearly always has one.  In order to
+automatically learn this information for resource-scarce, morphologically rich
+languages, we are currently implementing a system that requires only an
+unannotated corpus and a morphological analyzer; other recent approaches have
+required more syntactic knowledge, in the form of treebanks, parsers, or
+chunkers.
+
+<div class="p"><!----></div>
+Our approach starts by processing each sentence in the corpus with the
+morphological analyzer, and finding all of the verbs. For sentences with only
+one verb, we then count the occurrences of nouns that seem to be, because of
+inflection, the arguments of the verb, and also words that are plausible
+candidates to be the verb's arguments, where "plausibility" will be determined
+by a small number of language-specific heuristics. For example, a noun
+inflected with the accusative case in a sentence with a verb and a clear
+subject will likely be the object of that verb. This approach throws away the
+information provided by more complex sentences (those with multiple verbs and
+embedded clauses), but it does not require syntactic analysis, either by a
+human or a parser, and will hopefully approximate the frequencies that would be
+learned from a deeper syntactic look.  Noisy observations will be filtered out
+using an approach similar to the one described by Przepi&#243;rkowski
+[<a href="#przepiorkowski" name="CITEprzepiorkowski">7</a>].  For consistency with other work, we will adopt the
+valency theory used by Bielický and Smrž in their 2008 work, which records
+whether a given verb usage contains an explicit Actor, Addressee, Patient,
+Effect, and Origin.
+
+<div class="p"><!----></div>
+We would like to apply the technique to Quechua because of our medium-term goal
+of developing an MT system for it; Quechua is spoken by roughly 10 million
+people in the Andean region of South America, and is thus the largest
+indigenous language of the Americas [<a href="#fontllitjos" name="CITEfontllitjos">4</a>]. Quechua encodes rather
+a lot of information into its verbs, including optional evidentiality. In many
+cases the verb's arguments are included in a suffix, although notably not when
+the objects are in the third person [<a href="#serafin" name="CITEserafin">5</a>].
+For the Quechua morphological analyzer, we will
+use Michael Gasser's <tt>AntiMorfo</tt> system [<a href="#gasser:antimorfo" name="CITEgasser:antimorfo">3</a>], which can
+analyze Quechua verbs, nouns, and adjectives. Also, we have been graciously
+provided with the Quechua corpus collected by CMU's AVENUE project, described
+in [<a href="#fontllitjos" name="CITEfontllitjos">4</a>].  However, to evaluate our work, we would like to use a
+treebank, wherein the objects of each of the verbs in a sentence may be easily
+found and the occurrences of objects counted. As far as we know, there is not
+yet a large treebank of Quechua, although Rios et al. have constructed a small
+one [<a href="#rios" name="CITErios">6</a>]. As the work progresses, we will make note of the
+differences in the distributions of verb usages between sentences with only one
+verb, which the system will be able to handle without use of a treebank, and
+sentences with multiple verbs and embedded clauses, which we will not try to
+handle without a deep parser.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc2">
+2</a>&nbsp;&nbsp;Evaluation</h2>
+In order to determine the efficacy of our approach, we will apply it to Arabic,
+another morphologically rich language, which has more available resources. We
+will analyze the morphology of Arabic verbs using Pierrick Brihaye's <tt>
+Aramorph</tt>, a port of the Buckwalter morphological analyzer that natively
+supports Unicode text [<a href="#brihaye" name="CITEbrihaye">2</a>]. For the Arabic text and treebank, we will
+use the newswire data in the Arabic Penn Treebank, Part 1, Version 3, which has
+both Arabic text in SGML format and as parsed trees.
+
+<div class="p"><!----></div>
+This will allow us to compare the valencies learned from the unannotated corpus
+with those that are more directly observable from the treebank, since each
+verb's arguments will be easier to find with syntactic information. If the
+valencies that we discover with the unannotated approach are close to those
+learned from the treebank, and we get a broad coverage over the verbs observed
+in the corpus, then this would provide an argument that the technique works
+fairly well for Arabic, and we could continue using it as we acquire more
+textual data for more under-resourced languages. 
+We'll additionally report on the distribution of verbs in our Quechua data, and
+how many of them occur in one-clause sentences as opposed to sentences with
+multiple verbs.
+
+<div class="p"><!----></div>
+
+<h2>References</h2>
+
+<dl compact="compact">
+ <dt><a href="#CITEbielicky" name="bielicky">[1]</a></dt><dd>
+Viktor Bielický and Otakar Smrž. Building the Valency Lexicon of Arabic
+Verbs. LREC (2008)
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEbrihaye" name="brihaye">[2]</a></dt><dd>
+Pierrick Brihaye. AraMorph morphological analyzer for Arabic.
+<a href="http://www.nongnu.org/aramorph/"><tt>http://www.nongnu.org/aramorph/</tt></a>
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEgasser:antimorfo" name="gasser:antimorfo">[3]</a></dt><dd>
+Michael Gasser. Antimorfo morphological analyzer for Quechua.
+<a href="http://www.cs.indiana.edu/~gasser/software.html"><tt>http://www.cs.indiana.edu/~gasser/software.html</tt></a>
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEfontllitjos" name="fontllitjos">[4]</a></dt><dd>
+Christian Monson, Ariadna Font Llitjos, Roberto Aranovich, Lori Levin, Ralf
+Brown, Eric Peterson, Jaime Carbonell, and Alon Lavie. Building NLP
+Systems For Two Resource-Scarce Indigenous Languages: Mapudungun and Quechua.
+In LREC 2006: Fifth International Conference on Language Resources and
+Evaluation. (2006)
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEserafin" name="serafin">[5]</a></dt><dd>
+Serafin M. Coronel-Molina. Quechua Phrasebook. Lonely Planet, Victoria,
+Australia. (2002)
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITErios" name="rios">[6]</a></dt><dd>
+Annette Rios, Anne Göhring and Martin Volk. 2009. A Quechua-Spanish parallel
+treebank. In: 7th Conference on Treebanks and Linguistic Theories, Groningen.
+(2009)
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEprzepiorkowski" name="przepiorkowski">[7]</a></dt><dd>
+Adam Przepi&#243;rkowski. Towards the Automatic Acquisition of a Valence
+Dictionary for Polish.  In: Małgorzata Marciniak and Agnieszka Mykowiecka,
+eds., Aspects of Natural Language Processing: Essays Dedicated to Leonard Bolc
+on the Occasion of His 75th Birthday, Springer Verlag, LNCS series 5070, pp.
+191-210. (2009)</dd>
+</dl>
+
+<div class="p"><!----></div>
+
+<br /><br /><hr /><small>File translated from
+T<sub><font size="-1">E</font></sub>X
+by <a href="http://hutchinson.belmont.ma.us/tth/">
+T<sub><font size="-1">T</font></sub>H</a>,
+version 3.85.<br />On  8 Dec 2010, 00:15.</small>
+</html>

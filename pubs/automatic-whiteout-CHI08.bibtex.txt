@@ -1,0 +1,12 @@
+@inproceedings{Clawson08,
+ author = {James Clawson and Kent Lyons and Alex Rudnick and Robert A. Iannucci, Jr. and Thad Starner},
+ title = {Automatic whiteout++: correcting mini-QWERTY typing errors using keypress timing},
+ booktitle = {CHI '08: Proceeding of the twenty-sixth annual SIGCHI conference on Human factors in computing systems},
+ year = {2008},
+ isbn = {978-1-60558-011-1},
+ pages = {573--582},
+ location = {Florence, Italy},
+ doi = {http://doi.acm.org.www.library.gatech.edu:2048/10.1145/1357054.1357147},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ }

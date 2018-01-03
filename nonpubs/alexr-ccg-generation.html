@@ -1,0 +1,843 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+           "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta name="GENERATOR" content="TtH 3.85">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+ <style type="text/css"> div.p { margin-top: 7pt;}</style>
+ <style type="text/css"><!--
+ td div.comp { margin-top: -0.6ex; margin-bottom: -1ex;}
+ td div.comb { margin-top: -0.6ex; margin-bottom: -.6ex;}
+ td div.hrcomp { line-height: 0.9; margin-top: -0.8ex; margin-bottom: -1ex;}
+ td div.norm {line-height:normal;}
+ span.roman {font-family: serif; font-style: normal; font-weight: normal;} 
+ span.overacc2 {position: relative;  left: .8em; top: -1.2ex;}
+ span.overacc1 {position: relative;  left: .6em; top: -1.2ex;} --></style>
+
+<style>
+  body {
+    margin-left: 6em;
+    margin-right: 6em;
+  }
+</style>
+
+<title>Review: Realization with CCG</title>
+
+
+</head>
+<body>
+
+<div class="p"><!----></div>
+
+<h3 align="center">Alex Rudnick (alexr at cs dot indiana dot edu) </h3>
+
+<title>Review: Realization with CCG</title>
+    
+<h1 align="center">Review: Realization with CCG </h1>
+
+<h3 align="center">May 2010 </h3>
+
+<div class="p"><!----></div>
+ 
+<h2> Abstract</h2>
+Here I give an overview of recent work on natural language realization with
+Combinatory Categorial Grammar, done by Michael White and his colleagues, with
+some more specific descriptions of the algorithms used, where they were unclear
+to me. In particular, I focus on the work presented in his 2007 paper
+[<a href="#broadcoverage" name="CITEbroadcoverage">5</a>], in which White et al describe a process for extracting a
+grammar from the CCGBank and using it to generate text based on semantic
+descriptions given in HLDS, the Hybrid Logic Dependency Semantics. I also give
+some background from his earlier work, a description of some background
+ideas.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc1">
+1</a>&nbsp;&nbsp;Overview</h2>
+
+<div class="p"><!----></div>
+In their 2007 paper, Towards Broad Coverage Surface Realization with CCG
+[<a href="#broadcoverage" name="CITEbroadcoverage">5</a>], White, Rajkumar and Martin present their progress towards
+developing a system capable of producing text from semantic representations of
+a wide variety of sentences, such as those found in news text.  The sentences
+actually used in this effort are from the Penn Treebank, by way of CCGbank, a
+corpus of Penn Treebank sentences coupled with CCG parses due to Hockenmaier
+and Steedman [<a href="#ccgbank" name="CITEccgbank">4</a>].
+
+<div class="p"><!----></div>
+The extensions presented by White et al broaden the realization coverage and
+robustness of OpenCCG [<a href="#openccg" name="CITEopenccg">10</a>], a freely available system for NLP with
+the Combinatory Categorial Grammar, in several novel ways. First, they make use
+of a large, automatically extracted grammar, the creation of which took some
+engineering work, described in the paper.  Additionally, to cope with the large
+search space of possible sentences licensed by a purely symbolic grammar, they
+use a statistical language model to guide the search for high-quality output
+text. They also add the ability to generate sentences not explicitly licensed
+by the grammar, when a semantic form can't be completely expressed.  Rather
+than simply giving up, the system always produces some text for a given
+semantic representation, although the text produced may not be completely
+grammatical.
+
+<div class="p"><!----></div>
+While there have been previous realizers using OpenCCG for more restricted
+domains with hand-crafted grammars, the system presented by White et al aims to
+demonstrate how to build realization systems that
+handle a wide range of semantic inputs with relative ease,
+working acceptably for open-domain applications. In the long run, such a
+broad-coverage realizer
+could be used for machine translation based on semantic transfer
+[<a href="#broadcoverage" name="CITEbroadcoverage">5</a>].
+
+<div class="p"><!----></div>
+Overall, the system seems to work well, both in light of BLEU scores
+calculated between the generated text (the scores are far above those typical
+for machine translation systems) and the sensibility of the sentences
+generated, although deciding on an appropriate metric for success in this task
+is something of an open problem.
+
+<div class="p"><!----></div>
+In the following sections, I describe the system's generation process,
+including the chart realizer, its statistical language model and the process
+for generating sentences not licensed by the grammar; how the grammar is
+extracted from CCGbank; and issues with evaluating the system. I also give a
+brief overview of BLEU and HLDS, the Hybrid Logic Dependency Semantics. Text in
+<tt>typewriter</tt> refers to functions and class names from the 
+OpenCCG software [<a href="#openccg" name="CITEopenccg">10</a>].
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc2">
+2</a>&nbsp;&nbsp;Realization process</h2>
+
+<div class="p"><!----></div>
+The realization process follows a "generate-and-select" paradigm; the
+generative aspect is a symbolic process based on production rules, in the form
+of a chart realizer. The selection happens through a statistical language
+model, which the system uses to rank proposed solutions, and when applicable,
+guide a beam search.  The extracted grammar itself is not
+weighted or probabilistic; all ranking of derivations is done by the language
+model. This approach contrasts with some familiar techniques for broad-coverage
+grammars, such as PCFGs.  It may be useful to think of this system as similar
+to the decoder of a machine translation system, if we imagine the extracted
+CCGbank grammar as a synchronous grammar (as described by Chiang
+[<a href="#synchronous" name="CITEsynchronous">3</a>]) between logical forms and syntactic derivations.
+
+<div class="p"><!----></div>
+The realizer has two modes, which have been explored at different phases of the
+research. In the 2007 paper, White et al make use of the "anytime best-first
+search" mode, which enables users to spend more time or computing power for
+higher-quality results. The goal of anytime mode is to reliably produce
+acceptably good realizations quickly, without worrying about finding all
+possible realizations [<a href="#chartrealization" name="CITEchartrealization">8</a>], which is the practical case for
+a task like a dialog system or machine translation, where only one output
+realization is required.  The other mode supported by the CCG realizer is a
+two-stage algorithm with packing and unpacking phases, which will find all
+licensed derivations. The two-stage algorithm is described in detail in the
+2006 paper [<a href="#disjunctive" name="CITEdisjunctive">6</a>]. 
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc2.1">
+2.1</a>&nbsp;&nbsp;Chart realization</h3>
+
+<div class="p"><!----></div>
+In their 2003 paper, White and Baldridge describe the basic operations of the
+OpenCCG chart realizer [<a href="#chartrealization" name="CITEchartrealization">8</a>], which forms the basis of the
+broad-coverage realization system used in the more recent work
+[<a href="#broadcoverage" name="CITEbroadcoverage">5</a>]. Here I describe the process from the 2003 paper, which
+does not account for semantic representation that contain disjunctions. In
+White's 2006 paper, he describes elaborations to the process that make it
+possible to generate text from logical forms that contain alternatives where
+one out of several must be chosen, such as synonyms or alternative phrasings.
+As far as I can tell, while this capability was mentioned in the 2007 paper, it
+was not used in the experiments.
+
+<div class="p"><!----></div>
+While there are many possible approaches to realization, White et al choose a
+chart realizer because it can use the same grammar as a chart parser
+[<a href="#disjunctive" name="CITEdisjunctive">6</a>], which makes it easier to ensure that all derivations that
+could be produced with the realizer are also parsable, and vice versa. A
+chart-based realizer also allows optimizations developed for the chart parser
+to be adapted for use in the realizer, and makes generation agnostic regarding
+the order of terms in the logical form (LF) input.
+This last desideratum is useful for the OpenCCG approach; the realization
+algorithm relies on being able to reorder parts of a logical form.
+
+<div class="p"><!----></div>
+In OpenCCG, the chart realizer is a bottom-up process that produces a
+derivation of the input
+logical form, and thus the text of the sentence, covering every subpart of the
+input semantic representation.  A nonobvious high-level insight is that the
+derivations being searched for are not syntactic derivations, but semantic.
+This is an important distinction: the realization process is a search through
+the space of ways to combine the <em>semantic</em> components of lexical entries.
+Once that derivation has been found, as a happy side effect, it has also
+produced a syntactic representation of the sentence and thus the output text.
+
+<div class="p"><!----></div>
+The OpenCCG chart realizer works in several steps. First, it flattens the input
+LF into a list of elementary propositions, or EPs, each of which describes one
+very small part of the semantic content of a sentence. These EPs
+will form the basis of the chart over which the realizer will try to form a
+derivation, analogous to individual words that need to be accounted for by a
+parser, although they do not have a linear order.
+
+<div class="p"><!----></div>
+Once all of the EPs have been listed, the realizer looks up lexical entries
+that have semantic entries matching those of the EPs that we want to cover,
+records both their semantic and syntactic components, and puts these entries
+into a list of components that may be used to construct the desired meaning. In
+the 2003 paper, there is a note that some of the retrieved lexical entries may
+contain semantic features that are not called for by the input LF, which would
+result in an output LF (thus output text) that contains semantic features not
+specified by the input [<a href="#chartrealization" name="CITEchartrealization">8</a>]. This is interesting and
+possibly worrisome, but it's not discussed how often this is necessary, or
+whether it helps produce desirable output.
+
+<div class="p"><!----></div>
+To account for the possibility that a given predicate in the LF may not have a
+corresponding lexical entry in the grammar in use, the system also has a
+non-probabilistic idea of "smoothing" that makes sure there are suitable
+lexical entries available. For each word in the test sentences,
+out-of-vocabulary nouns, proper names, numbers, adjectives, verbs and adverbs
+are all given lexical categories that were seen for their respective
+part-of-speech, but not for those particular words.  Verbs are all
+ascribed the five most common lexical entries for verbs, and adverbs the three
+most common for adverbs, presumably with the predicate in their LF changed.
+Other words are given all categories that occur more than 50 times in the
+training corpus
+[<a href="#broadcoverage" name="CITEbroadcoverage">5</a>].
+
+<div class="p"><!----></div>
+From this point, the realizer tries to find a derivation that combines the
+semantic forms of the lexical entries into the given LF. This is done with
+three types of data structures. The first is an <em>edge</em>, which consists of
+a CCG sign (derived from a lexical entry, initially), coupled with an encoding
+of which parts of the target LF this edge covers, and which indices (nominals)
+can be referenced from this sign. For efficiency reasons, the latter two are
+stored as bit vectors, which enable quick checks for disjointness by taking the
+bitwise AND of two edges and checking for a result of zero.  Edges initially
+correspond to lexical entries, but the result of combining two edges during the
+search procedure is also an edge, so throughout the semantic derivation, they
+correspond with chunks of semantic and syntactic material larger than a word.
+
+<div class="p"><!----></div>
+Edges can reside either in the <em>agenda</em>, or in the <em>chart</em>.
+The agenda is a priority queue of
+edges that should be added to the chart; the realizer can pluggably use
+different strategies for sorting the agenda, causing different
+realizations to be reached first. The chart is similar to the chart of a chart
+parser, in that it keeps track of partial solutions to the problem at hand,
+but different in two ways: 
+it keeps track of which elementary propositions an edge
+covers instead of which words a syntactic constituent covers, and since there's
+no linear order for EPs, partial solutions are not kept in a two-dimensional
+array, as would be typical with chart parsing. The edges (partial solutions) are
+simply kept in a list and scanned linearly; the algorithm, described succinctly
+in Figure 1 in the 2003 paper [<a href="#chartrealization" name="CITEchartrealization">8</a>], is in fact implemented
+very simply with Java ArrayLists, in the class
+<tt>opennlp.ccg.realize.Chart</tt>
+[<a href="#openccg" name="CITEopenccg">10</a>].
+
+<div class="p"><!----></div>
+<br /><br />The chart parser proceeds as follows:
+
+<ul>
+<li> While there are remaining edges in the agenda, get the first edge in
+  the agenda and call this the "current edge". We now attempt to add the
+  current edge into
+  the chart, but will skip it if there's already an edge that covers the same
+  set of EPs.
+<div class="p"><!----></div>
+</li>
+
+<li> For each edge already in the chart, see if we can combine the
+  current edge with this edge. This can be done when the current edge and
+  the edge in question have disjoint LF coverage but they have overlapping
+  references in the LF (i.e., they can be combined semantically)
+  <a href="#tthFtNtAAB" name="tthFrefAAB"><sup>1</sup></a>,
+  and there is a syntactically valid way to combine the two edges. Any
+  successful combination of the current edge with edges already in the chart
+  creates a new edge, which is added to the agenda.
+<div class="p"><!----></div>
+</li>
+
+<li> Apply any unary (e.g., CCG type-raising) rules that apply to the current
+  edge and combine with semantically null words, such as syntactic particles.
+<div class="p"><!----></div>
+</li>
+
+<li> Add the current edge to the chart and continue processing through the
+  agenda.
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+Each edge in the chart knows how much of the LF in question it covers, and the
+two modes differ in what they do having found an edge that with complete
+coverage. The pack-unpack mode continues searching until the agenda is empty
+(i.e., all possible derivations have been added to the chart, in a packed
+representation), and then can expand them into their constituent parts on
+demand (unpacking). The any-time search will terminate having found an edge
+that covers the entire LF, if the allotted search time is up, but continue
+looking for more solutions if there's more time available.
+
+<div class="p"><!----></div>
+Next, we'll describe the language model that guides the search for derivations.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc2.2">
+2.2</a>&nbsp;&nbsp;Language model</h3>
+
+<div class="p"><!----></div>
+As mentioned earlier, the realizer system needs some way to efficiently search
+the space of derivations and select the best outputs, given that many may be
+possible. The grammar itself has no notion of which syntactic productions are
+the most likely. So in order to rank solutions, both partial and complete,
+White et al tried several different versions of trigram models, combining
+scores based on transitions over words, part-of-speech tags, and supertags.
+
+<div class="p"><!----></div>
+The ngram-based language models assign a probability to a word, given the
+context of the two previous words, and to a part-of-speech tag, given
+the two previous tags. The probability of a supertag is estimated not using
+the two previous supertags, but the two previous tags. These models are
+built using the SRILM
+toolkit<a href="#tthFtNtAAC" name="tthFrefAAC"><sup>2</sup></a>,
+and trained using sections 2 to 21 of the
+CCGbank, which are referred to as the standard training sections
+[<a href="#broadcoverage" name="CITEbroadcoverage">5</a>].
+
+<div class="p"><!----></div>
+Given that the language models assign probabilities to individual words in a
+particular context, one might onder how these scores are combined to give a
+score for an entire edge, which will typically include many words. Multiplying
+probabilities together, as is described in Equation 1 in the 2007 paper
+[<a href="#broadcoverage" name="CITEbroadcoverage">5</a>],
+would mean that scores get monotonically lower, since probabilities are always
+in [0,1]. This seems to suggest that larger (more complete) edges would tend
+to be filtered out by the beam search.
+
+<div class="p"><!----></div>
+The paper doesn't explicitly answer the question of how this problem is
+avoided, but taking a look at the
+code in <tt>FactoredNgramModelFamily</tt> and
+<tt>NgramScorer:logProb</tt>, it looks as though the logarithms of
+probabilities are just being added, which is equivalent to the probabilities
+being multiplied. I haven't yet understood how this can work such that the
+edges that contain more words aren't bumped from the chart at pruning time. But
+since realizations are in fact being produced, I must have have missed
+something.
+
+<div class="p"><!----></div>
+White et al report that the most effective approach to scoring that they found
+was to multiply the scores from the POS model with the supertag model, and then
+take a weighted average between that number and the word-based trigram scores,
+giving 75% of the weight to the word-based ngram model. The weights here
+weren't tuned, but seem effective enough. One wonders what would have happened
+if different weights were used, or if these are parameters that could be tuned
+in a principled way.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc2.3">
+2.3</a>&nbsp;&nbsp;Putting it together: beam search</h3>
+
+<div class="p"><!----></div>
+White et al use a beam search to find the most promising realizations, as
+described in the 2007 paper [<a href="#broadcoverage" name="CITEbroadcoverage">5</a>]. Not much is said
+about it, merely that there's a beam width (which they call "n-best pruning
+value") of 5. What this means in practice, according to
+<tt>Chart:addEdgeToChart</tt> and
+<tt>NBestPruningStrategy</tt>, is that at any given point
+during the search, there may be up to five edges in the chart at any point.
+These edges may be partial or complete solutions, but they are kept in order by
+score (given by the language model), and every time a new edge is added to the
+chart, edges after the best five are dropped.
+
+<div class="p"><!----></div>
+There is also a configurable time limit on search. In the paper, White et al
+use a limit of 15 seconds; presumably longer times could be used to get better
+results, although in the paper the time limit was held constant. A longer time
+limit might be helpful for a larger grammar, however; when testing the realizer
+with a grammar derived from all available training data, the realizer runs out
+of time on 68% of the test sentences.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc2.4">
+2.4</a>&nbsp;&nbsp;Graceful degradation</h3>
+
+<div class="p"><!----></div>
+To handle the case where no complete realization for the desired LF can be
+found, White et al add an extension to the chart realizer that combines
+partial solutions into some output text, even when this is not licensed by the
+grammar. They say in the 2007 paper that it's the most significant extension
+to the realizer itself implemented so far [<a href="#broadcoverage" name="CITEbroadcoverage">5</a>].
+
+<div class="p"><!----></div>
+The extension is implemented in about thirty lines of Java in
+<tt>Chart:joinBestFragments</tt> [<a href="#openccg" name="CITEopenccg">10</a>]; it works by 
+finding the most complete realization (the one that covers the largest
+fraction of the desired elementary predications), with ties broken by highest
+score from the language model. This is placed in a list of edges
+that will be concatenated together. After the biggest chunk is found, then the
+system searches the chart and agenda, greedily, for edges that cover disjoint
+parts of the LF, adding the ones with the greatest (disjoint) coverage to the
+list first, until no further nodes can be found in the chart or the agenda.
+
+<div class="p"><!----></div>
+At this point, the target LF may or may not be covered, but there is a list of
+fragments that can be joined together. Then for each fragment in the list, it
+is added to a running concatenation of the edges, either on the left or right,
+depending on which side yields a higher score from the language model. This
+process makes just one pass through the list of fragments, and may not yield
+grammatical or sensible output, but it does result in text of some sort.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc3">
+3</a>&nbsp;&nbsp;Extracting the grammar</h2>
+
+<div class="p"><!----></div>
+In the 2007 paper, White et al present the novel use of a large, automatically
+extracted grammar for generating text with OpenCCG.  They derive the grammar
+for the realizer from the CCGbank corpus, in a process that takes several
+steps.  The first step is to translate the sentences in the CCGbank into an XML
+format, so that they can be operated on by XSLT, a programming language for
+performing transformations on XML data. As they're distributed, the sentences
+in the CCGbank corpus look something like the original Penn Treebank format
+<a href="#tthFtNtAAD" name="tthFrefAAD"><sup>3</sup></a>,
+and are thus not compatible with XSLT. 
+
+<div class="p"><!----></div>
+After the sentences are converted to XML, the XSLT processing changes the
+derivations of the sentences "to
+reflect the desired syntactic derivations" [<a href="#broadcoverage" name="CITEbroadcoverage">5</a>]; the
+differences between the CCGbank analyses of sentences and analyses that would
+work well with OpenCCG have to do with coordinaton and the handling of
+punctuation. Additional changes must be done "to support semantic dependencies
+rather than surface syntactic ones". I would like to understand and explain
+this process more deeply, but in the interest of time and space (and since I'm
+unfamiliar with XSLT), I will leave it as an exercise to the interested reader
+to look at the relevant source in the OpenCCG repository in
+<tt>ccgbank/extract</tt>.
+
+<div class="p"><!----></div>
+After syntactic transforms have been performed, the system extracts a grammar
+from the derivations in the corpus. During this process, HLDS logical forms
+must be produced for the lexical entries; this is done by matching derivations
+against a series of "generalized templates" for HLDS entries; then syntactic
+parts of derivations are matched to semantic roles.
+At this point, due to the lexicalized nature of CCG, the work of extracting the
+grammar is done: all the information about a lexical entry and how it behaves
+with respect to the CCG combinatory rules is contained in the lexical entry
+itself.
+
+<div class="p"><!----></div>
+White et al additionally do some pruning on the grammar for the experiments
+presented in the 2007 paper. Particularly, they exclude
+lexical categories (words with a given syntactic shape) and unary type-changing
+rules that occur less than a constant number of times (k = 3, 5, or 10,
+depending on the experiment being performed), and only allow
+categories and rules that match the generalized templates.
+
+<div class="p"><!----></div>
+Right after the grammar extraction process, but possibly before the pruning
+takes place (the paper is unclear on this point, in section 3), sentences from
+the development and test sections that can be successfully parsed according to
+their gold-standard derivations have their logical forms saved for later
+testing of the realizer. The great majority, roughly 95%, of sentences in the
+development and testing sets are assigned LFs in this way.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc4">
+4</a>&nbsp;&nbsp;Experiments</h2>
+<a name="sec:evaluation">
+</a>
+
+<div class="p"><!----></div>
+For the 2007 paper, White et al run two experiments, "non-blind" and "blind".
+For the non-blind experiment, they extract a grammar from the development
+section of the CCGbank, then for each LF that was successfully extracted from
+the development section, they run the realizer in any-time search mode with a
+beam-width of five and a cutoff time of 15 seconds.  For this development run,
+they prune out lexical categories that occurred fewer than five times, and
+unary rules that occurred fewer than three times, where these parameters were
+empirically tuned during development.
+During the non-blind experimentation,
+they try several different language models for comparison, including various
+combinations of a word-based trigram model (with different kinds of lexical
+smoothing), a POS tag trigram model, and the supertag trigram model, explained
+earlier. They find that the scoring method that includes all three language
+models is the most effective on the development set.
+
+<div class="p"><!----></div>
+For the blind portion of the testing, they use the traditional training/test
+split, and extract a larger grammar from the training portion of the CCGbank,
+sections 2 through 21. Lexical categories and unary rules that occurred fewer
+than ten times were pruned. Having extracted the larger grammar, they go
+through all of the LFs taken from the development and test sections and run
+the any-time search procedure (again with a 15-second time limit) for
+realizations, using the combined trigram language model (word-based, tag-based,
+and supertag-based). For comparison, they also repeat the experiment with
+just the word-based trigram model. Again, they find that the combined trigram
+language model has the best performance, but with the larger grammar, the
+search for complete realizations is much less successful. 
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc5">
+5</a>&nbsp;&nbsp;Results</h2>
+
+<div class="p"><!----></div>
+White et al report BLEU scores for the two experiments in Tables 1 and 2 of the
+2007 paper [<a href="#broadcoverage" name="CITEbroadcoverage">5</a>]. They find that, with the best scoring model,
+they are able to get a BLEU score of 0.6615 on the development data (with the
+grammar based on the development data), and on the blind test, they are able
+to get a BLEU score of 0.5578 over the development sentences, and 0.5768 over
+the test sentences. These scores are all much better than the scores that were
+produced using just the word-based trigram model: the blind test score for that
+model is 0.5178, for an increase of almost 6 BLEU points. So it's fairly clear
+that the more detailed language model helps realization in this case.
+
+<div class="p"><!----></div>
+Additionally, they give a few examples of sentences that produced by the
+realizer; these two were generated from the well-known first two sentences of
+the Penn Treebank, using the grammar derived from the development set.
+Generating the first sentence apparently required the use of the fragment
+concatenation algorithm.
+
+<div class="p"><!----></div>
+
+<ul>
+<li> "61 years old Pierre Vinken will join the board as a nonexecutive
+  director Nov. 29"
+<div class="p"><!----></div>
+</li>
+
+<li> "Mr. Vinken is chairman of Elsevier N.V. , the publishing Dutch group."
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+These two sentences contain exactly the same words as those in
+the Penn Treebank sentences, just in slightly different orders: the first
+sentence has "61 years old" moved before "Pierre Vinken", whereas in the
+original it occurs afterwards. The second realization presented simply switches
+the order of "Dutch" and "publishing".
+
+<div class="p"><!----></div>
+White et al also report on the fraction of the time that complete realizations
+were achieved only using the grammar, as opposed to the fragment-adjoining
+algorithm. Apparently in the development tests, only 55% of the sentences are
+realized completely from the grammar, with the other 45% having their results
+composed by fragment adjoining. The results are worse when the larger grammar
+was used; in that case, the system only found complete realizations for 22% of
+the development sentences, and ran out of time during search in 68% of the
+cases. They write in section 4.2 of the 2007 paper that this is due to search
+errors; the larger grammar licenses too many derivations for the beam search to
+completely explore in the time allotted, and the trigram language model only
+helps so much.
+
+<div class="p"><!----></div>
+To confirm that search errors were a problem, they run further experiments,
+including one in which they are able to generate complete realizations for
+50% of the sentences in one file from the development set using the large
+grammar by making use of an "oracle" language model that gives better scores
+for higher BLEU scores. This is certainly cheating for machine-learning
+purposes, but useful for debugging. We know that the gold standard derivation
+is in fact licensed by the extracted grammar, otherwise the sentence would not
+have been included in the development set. So the failures to find a complete
+derivation in that case must be due to search errors; perhaps the beam is too
+narrow.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc5.1">
+5.1</a>&nbsp;&nbsp;About BLEU</h3>
+<a name="sec:bleu">
+</a>
+
+<div class="p"><!----></div>
+BLEU is a standard metric typically used to judge the performance of machine
+translation systems. It estimates the goodness of the translation of an entire
+corpus by taking the "modified precision" of the output text with respect to
+example translations, which were produced by human translators [<a href="#bleu" name="CITEbleu">9</a>].
+Typically, measuring the precision of a translation would be done by taking the
+fraction of words in the proposed output text that occur in one of the
+reference translations; this is performed on a sentence-by-sentence basis. This
+approach sounds reasonable, but has the problem that a candidate translation
+may contain only one of the words in the reference translation and still have
+perfect recall. For example, in "the the the the the the the", every word in
+the candidate translation is present in the reference "the cat is on the mat",
+so it is given a precision of 7/7 [<a href="#bleu" name="CITEbleu">9</a>]. Modified precision changes
+this by only giving points for the first n occurrences of a word in the
+candidate translation, when it occurs n times in a reference. Thus, the
+series of seven "the&#223; gets a modified precision of 2/7, since "the" occurs
+twice in the reference.
+
+<div class="p"><!----></div>
+Analogous modified precision scores are computed, sentence by sentence, for all
+of the ngrams in the candidate sentences, up to a length of four by default.
+Then these modified precisions are combined together in a geometric average and
+given a "brevity penalty" (to discourage translations like "the", which still
+has a modified precision of 1/1). The exact equation used to calculate scores
+is given in section 2.3 of the BLEU paper [<a href="#bleu" name="CITEbleu">9</a>]. In experiments run by
+the developers of BLEU, they find that it correlates well with human judgement
+of translation quality. But in footnote 4, they also note the importance of
+having several different human translators produce reference text, because
+there can be many valid ways to express the same idea [<a href="#bleu" name="CITEbleu">9</a>].
+
+<div class="p"><!----></div>
+In the long run, BLEU scores as a metric for this realization task may not be
+the best choice, for two reasons; the first being that there should be a number
+of ways to express the same idea (corresponding to a semantic representation),
+but there is only one reference realization used to compute BLEU scores in the
+2007 White paper - just the original source text. Secondly, the use of HLDS
+predicates that correspond so closely to individual words seems like it would
+almost guarantee that the words in the source sentence will be nearly identical
+to the ones in the output sentence. Taking a look at Figure 1 in
+[<a href="#broadcoverage" name="CITEbroadcoverage">5</a>], if we look at the predicates used and interpret them as
+words instead of abstract semantic entities, we see: <em>design</em>, <em>based
+on</em>, <em>be</em>, <em>collection</em>, <em>series</em>, <em>Funny Day</em>, and
+<em>Villeroy and Boch</em>; the presence of these words constricts which possible
+sentences could be generated greatly.
+
+<div class="p"><!----></div>
+White et al seem to have similar concerns, writing in the 2007 paper: "We
+suspect that BLEU scores may no longer be useful in measuring progress, given
+... our goal of producing desirable variation. As such, we expect that targeted
+human evaluations will become essential."
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc6">
+6</a>&nbsp;&nbsp;Conclusions and questions</h2>
+
+<div class="p"><!----></div>
+White et al describe a system that extracts a broad-coverage grammar from
+a large corpus of CCG derivations and then uses it, apparently successfully, to
+generate text based on semantic representations that they extract from
+sentences in the same corpus.
+
+<div class="p"><!----></div>
+Quite a lot of interesting future work remains in applications of this
+technique. Which domains will this system work well for? Will the grammar
+extracted from the CCGbank, based on news text as it is, generalize well to
+other domains? Which ones?
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc6.1">
+6.1</a>&nbsp;&nbsp;Possible applications</h3>
+The application of this system to a given domain depends on being able to
+produce the semantic representations in HLDS. It may not be theoretically
+difficult to produce HLDS propositions given entries in a database or some
+other logical formalism, but surely it would require some software engineering
+for each new domain.  Worse, many database rows correspond to boring sentences:
+"Inventory item number 1072 is a <em>T-SHIRT</em> that has size <em>LARGE</em>
+and color <em>RED</em>".
+
+<div class="p"><!----></div>
+Using the OpenCCG realizer for machine translation would require designing an
+appropriate interlingua, such that HLDS propositions could be mapped from one
+language into another. HLDS isn't a very abstract notion of meaning, in that
+it contains literal words from the source language; but words don't translate
+between languages in a clean one-to-one way. It's a very messy many-to-many
+relationship, and each language divides up the space of possible meanings quite
+differently. This problem isn't specific to OpenCCG or HLDS, of course, but is
+more general to machine translation based on semantic transfer.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc6.2">
+6.2</a>&nbsp;&nbsp;Evaluation</h3>
+A more immediate issue, brought up in the 2007 paper, is experimental design
+for evaluating this task with human subjects, considering that BLEU scores may
+be less applicable to this task than to machine translation. In machine
+translation, evaluation with human subjects can be done by asking bilingual
+speakers of the source and target languages for their judgements as to whether
+a source sentence and a proposed translation mean the same thing, or which
+translation they like the best, among many. But finding human subjects familiar
+with Hybrid Logic seems difficult unless one has access to a large number
+of logicians.
+
+<div class="p"><!----></div>
+One possible evaluation experiment would be to generate a number of different
+realizations, mix in the sentence from which the input LF was extracted, and
+have human subjects (native speakers of the output language) judge whether all
+of the sentences listed mean the same thing, without an indication of which of
+sentences were generated by computer. A good evaluation metric might be the
+likelihood that a human judge will decide that the input and output sentences
+mean the same thing; this metric would express the accuracy of the translation
+from input text to LF, and back to text. Another axis that should be measured
+is how natural the output text seems to human readers, and this could be tested
+by having human judges rank candidate outputs.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc6.3">
+6.3</a>&nbsp;&nbsp;Questions unanswered in the papers</h3>
+
+<div class="p"><!----></div>
+In reading the papers and my cursory exploration of the OpenCCG code, I came
+across a few questions that I wasn't readily able to answer. The most worrisome
+one, which I wasn't able to address even after some delving into the source
+code (although I am likely just missing the answer), is how the longer edges
+manage to avoid being pruned from the chart. It seems as though there should be
+some normalization to keep from penalizing longer strings of text, and possibly
+even a bonus to help the beam search not drop complete solutions. It's clear
+why phrases and complete sentences should be assigned lower probabilities than
+words, but I don't understand how this makes a good scoring metric if
+low-probability edges get pruned.
+
+<div class="p"><!----></div>
+Another unanswered question is how often the realizer ends up using the rule
+that it may include lexical items that contain semantic properties not
+mentioned in the input LF (this is mentioned in Section 4.2 of
+[<a href="#chartrealization" name="CITEchartrealization">8</a>]); is it needed often? If so, do the sentences that
+it generates come out well? Or perhaps this capability isn't even used in the
+experiments run for the 2007 paper?
+
+<div class="p"><!----></div>
+Regarding the any-time search procedure, while presumably many complete
+derivations corresponding to a given LF could have been licensed by the
+broad-coverage grammar, a beam search doesn't completely cover the space, and
+White et al discuss search errors in Section 4.2 of [<a href="#broadcoverage" name="CITEbroadcoverage">5</a>]; it
+would be interesting to know, for a sampling of the LFs, how many complete
+derivations could have been found given a complete search. When a complete
+solution was turned up, how good was it compared to the best one possible?  Is
+it ever the case that the grammar (even with lexical smoothing) simply can't
+produce a complete derivation for the target LF, or if that were the case,
+would the sentence have been excluded from testing?
+
+<div class="p"><!----></div>
+On the topic of the "graceful failure" greedy-concatenation mode, the 2007
+paper doesn't give very many examples of its output text, or say how sensible
+the text it produced was in general. One could imagine that it would tend to
+produce text with a high BLEU score relative to the input text, but this may be
+attributable to individual words corresponding with particular predicates in
+the LF; if the input text contains the word "dog", this will correspond with
+an EP that calls for <em>Dog</em>; there's no danger that words like "canine" or
+"puppy" will show up in the output text. This seems like a more fundamental
+issue for the approach of generating from HLDS inputs without more systemic
+knowledge of the relationships between words. But handling this problem
+properly would require a lot of ontology-building - essentially an
+English-English interlingua.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEcA">
+A</a>&nbsp;&nbsp;About HLDS</h2> 
+<a name="sec:hlds">
+</a>
+
+<div class="p"><!----></div>
+Hybrid logic dependency semantics (HLDS) is the formalism used for semantic
+representations in OpenCCG. To properly understand the term, it helps to get
+the right bracketing: HLDS is semantics based on <em>dependencies</em> and
+<em>hybrid logic</em>, not a hybrid between logic and dependencies. Hybrid logic
+is a logical formalism that extends modal logic and has the useful property
+that its propositions are first-class objects themselves, and may be
+referenced [<a href="#coupling" name="CITEcoupling">1</a>]. This is not possible in some other logical
+formalisms. Hybrid logic is described in detail by Blackburn in his 2000 paper
+[<a href="#manifesto" name="CITEmanifesto">2</a>].
+
+<div class="p"><!----></div>
+In HLDS, variables that reference other propostions are called <em>nominals</em>,
+and they are referenced with the @ operator. These nominals are particularly
+important in OpenCCG, because they are what allow us to flatten out and reorder
+the semantic representations into a large number of EPs, greatly simplifying
+the implementation of the chart generator while letting us keep track of which
+EPs hang together by co-reference. The modal aspect of HLDS allows us to put
+labels on relationships in an LF; OpenCCG uses modal logic's modes (what would
+typically be used to indicate, say, degrees of certainty) to indicate
+relationships between parts of the logical form, say the ARG1/ARG2 or
+ACTOR/PATIENT of a verb. For more detail, see the 2002 Baldridge and Kruijff
+paper [<a href="#coupling" name="CITEcoupling">1</a>].
+
+<div class="p"><!----></div>
+
+<h2>References</h2>
+
+<dl compact="compact">
+ <dt><a href="#CITEcoupling" name="coupling">[1]</a></dt><dd>
+Jason Baldridge and Geert-Jan M. Kruijff. 2002. Coupling CCG and Hybrid Logic
+Dependency Semantics. In Proc. of the 40th Annual Meeting of the ACL.
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEmanifesto" name="manifesto">[2]</a></dt><dd>
+Patrick Blackburn. Representation, Reasoning, and Relational Structures: a
+Hybrid Logic Manifesto. Logic Journal of the IGPL, 8(3), 339-625, 2000.
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEsynchronous" name="synchronous">[3]</a></dt><dd>
+David Chiang. An introduction to synchronous grammars. 2006. Tutorial given at
+ACL 2006.
+
+<div class="p"><!----></div>
+<a href="http://www.isi.edu/~chiang/papers/synchtut.pdf"><tt>http://www.isi.edu/~chiang/papers/synchtut.pdf</tt></a>
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEccgbank" name="ccgbank">[4]</a></dt><dd>
+Julia Hockenmaier and Mark Steedman. CCGbank: a corpus of CCG derivations and
+dependency structures extracted from the Penn Treebank. 2007. In Computational
+Linguistics 33(3), pp 355-396, MIT press.
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEbroadcoverage" name="broadcoverage">[5]</a></dt><dd>
+Michael White, Rajakrishnan Rajkumar and Scott Martin.  2007. Towards Broad
+Coverage Surface Realization with CCG. In Proc. of the 2007 Workshop on Using
+Corpora for NLG: Language Generation and Machine Translation (UCNLG+MT).
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEdisjunctive" name="disjunctive">[6]</a></dt><dd>
+Michael White. 2006. CCG Chart Realization from Disjunctive Inputs. In Proc. of
+the 4th International Conference on Natural Language Generation (INLG-06).
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEreining" name="reining">[7]</a></dt><dd>
+Michael White. 2004. Reining in CCG Chart Realization. In Proc. of the 3rd
+International Conference on Natural Language Generation (INLG-04).
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEchartrealization" name="chartrealization">[8]</a></dt><dd>
+Michael White and Jason Baldridge. 2003. Adapting Chart Realization to CCG. In
+Proc. of the 9th European Workshop on Natural Language Generation.
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEbleu" name="bleu">[9]</a></dt><dd>
+Kishore Papineni, Salim Roukos, Todd Ward, and Wei-Jing Zhu. 2002.
+BLEU: a Method for Automatic Evaluation of Machine Translation.
+Proceedings of the 40th Annual Meeting of the Association for
+Computational Linguistics (ACL), Philadelphia, July 2002, pp. 311-318.
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEopenccg" name="openccg">[10]</a></dt><dd>
+OpenCCG natural language processing library.
+
+<div class="p"><!----></div>
+<a href="http://openccg.sourceforge.net/"><tt>http://openccg.sourceforge.net/</tt></a></dd>
+</dl>
+
+<div class="p"><!----></div>
+<hr /><h3>Footnotes:</h3>
+
+<div class="p"><!----></div>
+<a name="tthFtNtAAB"></a><a href="#tthFrefAAB"><sup>1</sup></a>This is not strictly true in the case of generating coordinations;
+  see the 2003 paper [<a href="#chartrealization" name="CITEchartrealization">8</a>] for the complete account.
+<div class="p"><!----></div>
+<a name="tthFtNtAAC"></a><a href="#tthFrefAAC"><sup>2</sup></a>Available here:
+<a href="http://www-speech.sri.com/projects/srilm/"><tt>http://www-speech.sri.com/projects/srilm/</tt></a>
+<div class="p"><!----></div>
+<a name="tthFtNtAAD"></a><a href="#tthFrefAAD"><sup>3</sup></a>Example CCGbank sentences
+are available on Hockenmaier's site here:
+
+<div class="p"><!----></div>
+<a href="http://www.cs.uiuc.edu/~juliahmr/CCGbankDemo/"><tt>http://www.cs.uiuc.edu/~juliahmr/CCGbankDemo/</tt></a>
+<br /><br /><hr /><small>File translated from
+T<sub><font size="-1">E</font></sub>X
+by <a href="http://hutchinson.belmont.ma.us/tth/">
+T<sub><font size="-1">T</font></sub>H</a>,
+version 3.85.<br />On 18 May 2010, 02:04.</small>
+</body>
+</html>

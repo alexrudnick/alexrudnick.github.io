@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+
+<body>
+<p>
+So what do we want to say about the HLTDI work? What can you say in ten
+minutes?
+</p>
+
+<h2>title</h2>
+<h2> quote about the web being useful</h2>
+
+<h2> spill the beans</h2>
+<p>
+Lots of languages with pretty big install bases of native speakers don't have
+good machine translation.
+</p>
+
+<p>
+The most successful machine translation systems these days are statistical: SMT
+works really well, but it requires large corpora for the languages involved;
+the best thing to have is a bitextual corpus. "This document in L1 translates
+to this one in L2."
+</p>
+
+<p>
+There's work in "comparable corpora" too -- maybe you can make use of
+non-bitext corpora. That works sometimes.
+</p>
+
+<p>
+So, great. But what do you do for languages where there aren't large corpora
+(even monolingual) available?
+</p>
+
+<p>
+- identify /which/ particular elbow-grease is necessary for getting a
+  domain-specific MT system up for a specific resource-scarce language.
+</p>
+
+<h2> quechua</h2>
+<p>
+Bigger than Swedish, Hebrew, Bulgarian or Afrikaans.
+CMU's Avenue project went to Peru to collect a corpus, and LTI was kind enough
+to share it with us.
+</p>
+
+<h2> amharic</h2>
+<p>
+bigger than Czech or Greek or Hungarian. Almost as big as Thai!! (20 million)
+Mike Gasser speaks it.
+</p>
+
+<pre>
+Why those?
+- Lots of speakers! How can we help them get useful information in their native
+  languages?
+- Mike speaks Amharic
+- we have some Quechua speakers handy at IU.
+</pre>
+
+
+<h2> how we're going to do it</h2>
+<pre>
+We'll do more knowledge engineering than typical SMT does to get off the
+ground.
+- craft grammars by hand.
+- morphological analysis: this already works pretty well. Finite state
+  transducers.
+- XDG formalism for dependency parsing; it can have multiple layers of analysis
+  (dimensions), so that seems like a natural fit for doing MT. Synchronous
+  grammars: parse and generate simultaneously.
+- Machine learning where possible: small corpus of Quechua, and we'll elicit
+  user feedback.
+  ML will most likely take the form of optimizing weights in our weighted
+  constraint solving.
+</pre>
+
+<h2> morphological analysis</h2>
+<pre>
+- really important for Quechua and Amharic; they're synthetic languages with
+  very generative morphology, versus English or Chinese (which have simple
+  morphologies).  There's a lot of information stuck into an individual word.
+
+- another difficulty for SMT: the likelihood of seeing an individual word is
+  lower because so many different words are possible.
+
+- We use features that the morphological analyzer pulls out when writing the
+  grammar rules.
+
+</pre>
+
+<h2> what's XDG?</h2>
+<p>
+Formalism for dependency grammar, uses constraints to talk about grammar rules.
+PhD work by Debusmann and Duchier.
+</p>
+
+<p>
+Constraints are statements about what the solution should look like when we're
+done: things of the shape "if you have an adjective describing a noun, it has
+to go before the noun". (in Spanish, that'd be the other way)
+"la pelota azul" versus "the blue ball"
+</p>
+
+<p>
+Solutions are multigraphs -- there may be several links between two words in
+the parse, representing different parts of the analysis; English syntax for
+example in XDG uses Linear Precedence and Immediate Dominance. You could have
+another layer to talk about semantic representations...
+</p>
+
+<h2> dependency parsing</h2>
+<p>
+Dependency grammar, in case you're not familiar with it, talks about
+relationships between words instead of which phrases contain which other
+phrases.
+</p>
+
+<h2> what have we got so far?</h2>
+<p>
+- We (mostly Mike) implemented the XDG framework in Python. We thought about
+  using his code in Mozart/Oz...
+</p>
+<p>
+- Parsers for subsets of English and Amharic, can do relative clauses and
+  stuff.
+</p>
+<p>
+- Morphological analyzers for Quechua, Amharic &amp; Tigrinya.
+Made of FSTs!
+</p>
+
+<p>
+- Integrated with a WCSP solver so soft constraints are possible. Previously,
+  we'd been using a simple general-purpose constraint solver called
+  python-constraint
+</p>
+
+<p>
+- Produce linearizations given a parse; that's like the last step of output for
+  the synchronous grammar case (although the rest of synchronous grammar
+  doesn't work yet).
+</p>
+
+<h2> wcsp: weighted constraint satisfaction problem</h2>
+
+<p>
+Constraints can be broken with a certain cost.
+Gives us better and worse solutions.
+toulbar2 guys are really friendly!
+</p>
+
+<h2> tweaking weights</h2>
+<p>
+We had this interesting result that even with a grammar that doesn't handle
+coordination, we were able to tweak the weights to get this parse...
+So we may be able to punt on difficult grammatical issues. We'll see how well
+this scales; it may not be very general.
+</p>
+
+<p>
+But, strangely, coordination is pretty hard for dependency grammar.
+</p>
+
+<h2>problems for the near future</h2>
+<p>
+Our parser is really, really slow. We shouldn't be using general-purpose
+constraint solvers, but something like beam search.
+</p>
+
+<p>
+We've got optimization problems: figure out the best way to set the weights to
+encourage good parses and to compensate for incomplete grammars.
+</p>
+
+<p>
+Maybe we could use other dependency parsers first?
+</p>
+
+<p>
+More detailed grammars!
+</p>
+
+
+<pre>
+[ where we want to go ]
+- synchronous grammars based on XDG
+- soft constraints: figure out which constraints to relax to compensate for
+  incomplete grammars.
+- make software run much faster
+  - smarter constraint solvers, almost certainly
+  - rewrite parts in C++ ... or Go?
+- crowdsourcing, where possible
+- get feedback from language learners: imagine classrooms where
+  Quechua-speaking kids are learning Spanish... what feedback can we get from
+  them?
+
+"L3: Learning Lots of Languages"
+</pre>
+
+<h2>code and collaborators</h2>
+<h2>thoughts? questions!</h2>
+
+</body>
+</html>

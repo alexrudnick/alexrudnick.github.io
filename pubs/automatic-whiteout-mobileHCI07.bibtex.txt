@@ -1,0 +1,9 @@
+@inproceedings{Clawson07,
+ Abstract = {\textbf{Abstract:} We detect and correct typing errors made on mini--QWERTY keyboards by analyzing features of the typing itself. Examining a database of mini--QWERTY typing data reveals that many errors made by typists are ``off--by--one'' errors. One likely cause of these errors is the relative size difference between the user's thumb and the small, densely packed keys of the mini--QWERTY. Our goal with this work is to automatically correct the user's typing errors before they are displayed on the screen, hopefully improving expert typing speeds and accuracy. Using pattern recognition methods, we reduced the number of off--by--one errors by 39.78\% and the total errors by 26.41\%. This paper discusses the problem, the features used to detect errors, the techniques used to train the system, and future steps to generalize the algorithm for other keyboards and situations.},
+ Address = {New York, NY, USA},
+ Author = {James Clawson and Alex Rudnick and Kent Lyons and Thad Starner},
+ Booktitle = {MobileHCI '07: Proceedings of the 9th conference on Human-computer interaction with mobile devices and services (In Submission)},
+ Publisher = {ACM Press},
+ Title = {Automatic Whiteout: Discovery and Correction of Typographical Errors in Mobile Text Input},
+ Year = {2007}
+}
