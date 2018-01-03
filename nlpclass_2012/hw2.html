@@ -1,0 +1,103 @@
+<!doctype html>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<title>csci b490: hw2</title>
+<style>
+@import url(https://fonts.googleapis.com/css?family=Droid+Sans);
+body {
+  margin-left: 6em;
+  margin-right: 6em;
+  font-family: 'Droid Sans', sans-serif;
+}
+</style>
+</head>
+
+<body>
+<h1>hw2: Naïve Bayes classifiers and sentence segmentation</h1>
+
+<h2>instructions</h2>
+<p>
+This homework will have a little bit more programming than before, but also
+some discussion. Write up any written answers in a text file called
+<tt>hw2.txt</tt>. You'll complete the given program (just follow the
+instructions below), and zip up any files you changed or created into an
+archived named YOURUSERNAME-hw2.zip. Turn it in on OnCourse, under "hw2".
+</p>
+
+<p>
+As mentioned before, feel free to discuss with your friends and classmates!
+Just make sure all the code and text you turn in was typed by you. If you get
+substantial ideas from people or online sources, make sure to cite your
+sources! (this is good not just for honesty's sake, but it helps me know about
+good sources in the future; maybe we can share them)
+</p>
+
+
+<p>
+For this homework, you're given three small data sets to start to make sure we
+can implement a simple classifier.  They're all from the UCI Machine Learning
+repository, but I've modified them slightly to make sure they work with our
+code.  These are in the <tt>datasets</tt> directory, and they have already been
+split into <em>training</em> and <em>test</em> portions, so you can evaluate
+how well the classifier works.  Importantly, your code won't be able to get all
+the answers right, and that's to be expected! My version gets 1 <a
+href="http://archive.ics.uci.edu/ml/datasets/Iris">flower</a>, 3 <a
+href="http://archive.ics.uci.edu/ml/datasets/Congressional+Voting+Records">congresspeople</a>,
+and 16 <a href="http://archive.ics.uci.edu/ml/datasets/Balance+Scale">scale
+problems</a> wrong. Yours will probably do about the same, if your code works
+right!
+</p>
+
+<p>
+Run the classifier like this:
+</p>
+
+<p>
+<tt>$ python3 naivebayes.py datasets/house-votes-84.train datasets/house-votes-84.test</tt>
+</p>
+
+<p>
+<a href="hw2.zip">Get the starter code and data here.</a>
+</p>
+
+<h2>part one: training your classifier</h2>
+<p>
+In <tt>naivebayes.py</tt>, finish up the places marked TODO in the
+<tt>train</tt> function. The goal of the <tt>train</tt> function is that it
+learns the probability distribution over the different classes (how often did
+each class happen?), and the <em>conditional</em> probability distribution for
+each value for each feature, given a particular class. For example: if we're
+trying to classify congresspeople into parties, <em>given that we already know
+a congressperson is a Democrat</em>, what's the probability that they voted
+"yes" on a certain issue?
+</p>
+
+<p>
+Once this is working, you should be able to inspect the conditional
+probabilities: just print them out at the appropriate place in the code. I
+recommend testing this on the <tt>house-votes-84</tt> dataset, since it's just
+a two-way classification. Maybe you'll find that some of the votes were very
+polarizing?
+</p>
+
+<h2>part two: making classification decisions</h2>
+<p>
+Finish up the <tt>classify</tt> function in <tt>naivebayes.py</tt>. It should
+return the most probable class for a given instance, making use of the class
+prior probabilities and conditional probabilities computed earlier in
+<tt>train</tt>.
+</p>
+
+<h2>part three: evaluate your classifier</h2>
+<p>
+In <tt>hw2.txt</tt> tell us how well your classifier does on the three data
+sets. Importantly: if it does better on some of the problems than others, why
+do you think that is? Can you imagine ways to improve accuracy on the problem
+that your classifier has trouble with? Is the problem inherently hard, or is
+the classifier just missing the point? How could you help it?
+</p>
+
+</body>
+</html>

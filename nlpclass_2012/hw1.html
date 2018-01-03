@@ -1,0 +1,91 @@
+<!doctype html>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<title>csci b490: natural language processing</title>
+<style>
+@import url(https://fonts.googleapis.com/css?family=Droid+Sans);
+body {
+  margin-left: 6em;
+  margin-right: 6em;
+  font-family: 'Droid Sans', sans-serif;
+}
+</style>
+</head>
+
+<body>
+<h1>hw1: basic text processing and regular expressions</h1>
+
+<h2>instructions</h2>
+<p>
+Write up your answers for part one in a text file called <tt>part1.txt</tt>.
+For part two, you'll complete the program <tt>date_extract.py</tt>, and for
+part three, you'll complete the program <tt>eliza.py</tt>. Zip up those three
+files, and any other code that you changed or created (libraries you modified
+or added, for example), into an archive named YOURUSERNAME-hw1.zip, and turn it
+in on OnCourse, under "hw1".
+</p>
+
+<p>
+As mentioned before, feel free to discuss with your friends and classmates!
+Just make sure all the code and text you turn in was typed by you. If you get
+substantial ideas from people or online sources, make sure to cite your
+sources! (this is good not just for honesty's sake, but it helps me know about
+good sources in the future; maybe we can share them)
+</p>
+
+<p>
+<a href="hw1.zip">Get the starter code and data here.</a>
+</p>
+
+<h2>part one: text processing and a little bit of corpus exploration</h2>
+<p>
+Using the Unix utilities <tt>tr</tt>, <tt>sort</tt>, <tt>uniq</tt> and perhaps
+<tt>cat</tt> and <tt>head</tt>, explore the included wikinews articles. What
+are the 25 most common words in the articles? What sequence of commands did you
+use to produce this answer? (remember: connect a bunch of them together with
+pipes! don't forget <tt>sort -rn</tt> to sort things by number, in reverse
+order.)
+</p>
+
+<p>If you're feeling energetic: explore the <a
+href="http://www.cs.cmu.edu/~enron/">Enron email dataset</a> and pick the most
+common words from the sent mail of an Enron employee or two, or find some other
+large cache of interesting text!</p>
+
+<h2>part two: regular expressions in Python</h2>
+<p>
+Complete the included <tt>date_extract.py</tt>: this is really straightforward.
+It just finds dates in text files and then prints out each date matched,
+followed by the month from that date. You can get fancier if you want, but I
+just want you to be able to match the dates in the wikinews articles included
+with the homework.
+</p>
+
+<h2>part three: build your theraputic chatbot!</h2>
+<p>
+<ul>
+<li>Look through the code in <tt>eliza.py</tt>, convince yourself you
+understand what's going on, and then add at least 5 conversational rules, with
+regular expressions and response templates. Try one that matches two variables!
+Take out the existing rules that you think are boring!
+You can run ELIZA locally (not on IRC) by typing <tt>$ python3
+eliza.py</tt></li>
+<li>Implement the function <tt>switch_viewpoint</tt>, which we mentioned in
+class on Thursday. Figure out where to plug it in, so that ELIZA's replies are
+about "you" when the user types "I"! (hint: plug it in towards the end of the
+<tt>response_for_rule</tt> function) (another hint: that was a pretty big
+hint)</li>
+<li>OPTIONAL: <tt>$ python3 elizabot.py irc.soic.indiana.edu "#nlp" YOURBOTNAME
+"soic+irc" </tt>. Amaze and amuse your friends with your bot's witty mechanized
+repartee.</li>
+<li>Historical background from Wikipedia: <a
+href="http://en.wikipedia.org/wiki/ELIZA">ELIZA</a>,
+<a href="http://en.wikipedia.org/wiki/Joseph_Weizenbaum">Joseph
+Weizenbaum</a>.</li>
+</ul>
+</p>
+
+</body>
+</html>

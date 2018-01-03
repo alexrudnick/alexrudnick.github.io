@@ -1,0 +1,88 @@
+<!doctype html>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<title>csci b490: hw4</title>
+<style>
+@import url(https://fonts.googleapis.com/css?family=Droid+Sans);
+body {
+  margin-left: 6em;
+  margin-right: 6em;
+  font-family: 'Droid Sans', sans-serif;
+}
+</style>
+</head>
+
+<body>
+<h1>hw4: tagging and introduction to parsing</h1>
+
+<h2>about this assignment</h2>
+
+<p>
+We started this assignment with the <a
+href="https://sites.google.com/site/b490nlp/tagging-in-class-exercise">in-class
+exercise on October 9</a>.
+</p>
+
+<h2>part 1: finish your tagger!</h2>
+<p>
+Make the tagger that we started in the in-class exercise work! All the changes
+you have to make are in <tt>hmm_trellis.py</tt>, so that's the only file you
+have to turn in. Unless you make some other changes. <em>(this part is due for
+the homework ping on Thursday 18 October!)</em>
+</p>
+
+<h2>part 2: naive chart parser</h2>
+<p>
+Take the following grammar:
+</p>
+
+<pre>
+S -> NP VP           NP -> people
+VP -> V NP           NP -> fish
+VP -> VP PP          NP -> tanks
+NP -> NP PP          NP -> rods
+NP -> NP NP          V -> people
+PP -> P NP           V -> fish
+                     V -> tanks
+                     P -> with
+</pre>
+
+<p>Implement a CKY parser that can return all parses for "people fish tanks",
+"people fish with rods", and "people fish tanks with rods". CKY parsing is
+described at the beginning of Chapter 13 in Jurafsky and Martin! There's nice
+pseudocode that you can use on page 440. We'll build this live in class on
+Thursday 18 October.</p>
+
+<h2>HARD MODE</h2>
+
+<p>More things to try!</p>
+
+  <ul>
+  <li><b>any HARD MODE option from the page about the tagging exercise:</b>
+  Add better smoothing. Or do a thorough job of evaluating the tagger. Or see
+  how well your tagger does against somebody else's!
+  </li>
+
+  <li><b>Use a different programming language</b>: Show us your lambdas. Or is
+  this not Enterprise enough for you? Java it up!
+  </li>
+
+  <li><b>Build a broader-coverage grammar</b>: Get some sentences from the wild
+  (just a few!) and write grammar rules that allow you to parse them. How many
+  possible parses are there, for your real-world sentence, with your grammar?
+  <em>(recommended.)</em>
+  </li>
+  </ul>
+
+<h2>turning it in</h2>
+
+<p>Turn in your <tt>hmm_trellis.py</tt>, whatever code you write for your CKY
+parser, and a text file <tt>hw4.txt</tt>, describing how to run your parser,
+and any thoughts, questions, difficulties, or HARD MODE extensions you'd like
+to discuss. Use Oncourse! <em>Due on Thursday October 25 at 1:30pm.</em>
+</p>
+
+</body>
+</html>

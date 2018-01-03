@@ -1,0 +1,134 @@
+<!doctype html>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<title>csci b490: hw5</title>
+<style>
+@import url(https://fonts.googleapis.com/css?family=Droid+Sans);
+body {
+  margin-left: 6em;
+  margin-right: 6em;
+  font-family: 'Droid Sans', sans-serif;
+}
+</style>
+</head>
+
+<body>
+<h1>hw5: PCFGs</h1>
+
+<h2>about this assignment</h2>
+
+<p>
+In previous assignments, we gave you a lot of code to work with. This one is
+all you. Show us what you've got. You don't have to use Python; you can use
+whatever language you want (although if it's obscure or not multi-platform, let
+us know beforehand).
+</p>
+
+<p>This one is kind of involved. But you can do it. Please come see us during
+office hours to talk about it sometime during the next two weeks, or schedule
+another appointment if you honestly can't make it during any office hours.
+(email us, we're flexible; <em>this is part of the assignment, coming to talk to
+either Alex or Can</em>)
+</p>
+
+<h2>part 1: extract a PCFG from a treebank</h2>
+<p>
+<em>This part is due for the homework ping on Thursday 8 November!</em>
+</p>
+
+<p>
+You get a small treebank (adapted from <a
+href="http://www.cl.uzh.ch/research/paralleltreebanks/smultron_en.html">
+SMULTRON</a>), and your job is to extract a PCFG from it. What are all the
+production rules? What are their weights? You can set the weights for the rules
+using the formulas on page 467 of Jurafsky and Martin; just count up the number
+of times a given production is used, out of all the times that left-hand side
+of the production occurs. Have some way to print out the rules with their
+weights. Make sure all the different ways to make a NP (for example) have
+weights that sum to 1.0!
+</p>
+
+<ul>
+<li><a href="sophie_treebank.txt">treebank in parentheses here</a>, one
+sentence per line</li>
+</ul>
+
+<h2>part 2: convert your grammar to Chomsky Normal Form</h2>
+<p>
+Write a program that takes the grammar you extracted from the treebank and
+converts it to Chomsky Normal Form. Use the algorithm on page 437 of Jurafsky
+and Martin. <a href="http://en.wikipedia.org/wiki/Nota_bene">NB</a>: you're
+going to have to figure out what to do with the weights.  You can't just drop
+the weights! You don't have to read in a grammar from a text file or some other
+serialization -- you can keep it in memory from part 1. Be able to print out
+the new CNF grammar too.
+</p>
+
+<h2>part 3: make your CKY parser use weights.</h2>
+<p>
+Adapt your CKY parser from <a href="hw4.html">hw4</a> to use probabilities!
+Have it return the single most probable parse for an input sentence. The
+pseudocode on page 465 of Jurafsky and Martin (Figure 14.3) might be helpful.
+</p>
+
+<h2>part 4: evaluate!!</h2>
+<p>
+What precision, recall, and <a
+href="http://en.wikipedia.org/wiki/F1_score">F-measure</a> do you get when
+parsing the first ten sentences of the treebank? Write a program to calculate
+this. You're going to have to enumerate all the spans both in the "gold
+standard" parses from the treebank, and in your highest-ranked parses from your
+parser. Don't count the POS tags as "constituents" in your tree when
+calculating precision and recall. For example, in the tree:
+</p>
+
+<code style="white-space:pre">
+(S (NP (NN cats))
+       (VP (V eat)
+           (NP (NN cat) (NN food))))
+</code>
+
+<p>... there are four constituents: S from 0 to 4, NP from 0 to 1, VP from 1 to
+4, and NP from 2 to 4. This is not good practice, evaluating on sentences from
+the training data, by the way. But this is a very small treebank.</p>
+
+<ul>
+<li><a href="sophie_testset.txt">Test set here</a>, with each word separated by
+spaces. One sentence per line.</li>
+</ul>
+
+<h2>part 5: now think about what you've done</h2>
+<p>
+In <tt>hw5.txt</tt>, answer these questions. Also put whatever other questions,
+commentary, and observations you'd like to pass along.
+</p>
+<ul>
+<li>How did you decide what the weights should be for your new CNF rules? The
+algorithm on page 437 doesn't tell you what the weights should be for a
+PCFG. Argue that your new CNF grammar gives correct probabilities to parses,
+like your original non-CNF grammar would have.</li>
+<li>You could in principle modify the CKY algorithm to work with arbitrary
+context-free grammars. How would you do it? Why is it convenient to require
+Chomsky Normal Form? </li>
+<li>Despite being using dynamic programming and storing partial parses in a
+chart, the CKY algorithm does a lot more work than it strictly needs to -- in
+what ways does it do more work than, say, the Earley parsing algorithm?</li>
+</ul>
+
+<h2>HARD MODE</h2>
+
+<p>Let us know if you need some HARD MODE things to try. This seems hard
+enough.</p>
+
+<h2>turning it in</h2>
+
+<p>
+Turn in your code and your <tt>hw5.txt</tt>, with your answers and a quick
+description of what you did, and any HARD MODE extensions. Use Oncourse!
+<em>Due on Thursday November 15 at 1:30pm.</em>
+</p>
+
+</body>
+</html>

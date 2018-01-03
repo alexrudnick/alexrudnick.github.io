@@ -1,0 +1,187 @@
+<!doctype html>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<title>csci b490: hw3</title>
+<style>
+@import url(https://fonts.googleapis.com/css?family=Droid+Sans);
+body {
+  margin-left: 6em;
+  margin-right: 6em;
+  font-family: 'Droid Sans', sans-serif;
+}
+</style>
+</head>
+
+<body>
+<h1>hw3: n-gram models for spelling correction!</h1>
+
+<h2>about this assignment</h2>
+
+<p>
+This homework is adapted from Dan Jurafsky and Chris Manning's <a
+href="https://www.coursera.org/course/nlp">online NLP course</a>. They based
+their code on Peter Norvig's <a
+href="http://norvig.com/spell-correct.html">spelling corrector</a>. So there's
+a long line of happy borrowing here. I think this is a lovely instructive
+example of using a language model.
+</p>
+
+<p>
+In this assignment you will be training a language model to build a spell
+checker. Specifically, you will be implementing part of a noisy-channel model
+for spelling correction. We will give the likelihood term, or <b>edit
+model</b>, and your job is to make a <b>language model</b>, the prior
+distribution in the noisy channel model.  At test time you will be given a
+sentence with exactly one typing error. We then select the correction which
+gets highest likelihood under the noisy-channel model, using your language
+model as the prior. Your language models will be evaluated for <b>accuracy</b>,
+the number of valid corrections, divided by the number of test sentences.
+</p>
+
+<p>
+<a href="http://www.cs.indiana.edu/~alexr/nlpclass_2012/hw3.zip">
+Get the starter code and data here.
+</a>
+</p>
+
+<h2>data</h2>
+We will be using the writings of secondary-school children, collected by David
+Holbrook. The training data is located in the data/ directory. A summary of
+the contents:
+<ul>
+  <li><b>holbrook-tagged-train.dat:</b> the corpus to train your language models</li>
+  <li><b>holbrook-tagged-dev.dat:</b> a corpus of spelling errors for development</li>
+  <li><b>count_1edit.txt :</b> a table listing counts of edits <i>x | w</i>
+  </li>
+</ul>
+
+
+<p>
+Note that the data files do not contain &lt;s&gt; and &lt;/s&gt; markers, but
+the code which reads in the data adds them.
+</p>
+
+
+<h2>instructions</h2>
+Implement the following three language models:
+<ul>
+  <li><b>Laplace Unigram Language Model:</b> a unigram model with add-one
+  smoothing. Treat out-of-vocabulary items as a word which was seen zero times
+  in training.</li>
+  <li><b>Laplace Bigram Language Model:</b> a bigram model with add-one
+  smoothing.</li>
+  <li><b>Stupid Backoff Language Model:</b> use an unsmoothed bigram model
+  combined with backoff to an add-one smoothed unigram model</li>
+</ul>
+We have provided you with a uniform language model so you can see the basic
+layout, located in UniformLanguageModel.{py,java}.
+
+<p>
+To implement a language model you need to implement two functions:
+</p><ul>
+  <li><b>train(HolbrookCorpus corpus):</b> takes a corpus and trains your
+  language model. Compute any counts or other corpus statistics in this
+  function. See the example UniformLanguageModel for how to access sentences in
+  the corpus and the words in those sentences.</li>
+  <li><b>score(List<string> words):</string></b> takes a list of strings as
+  argument and returns the numerical score, which should be the log-probability
+  of the sentence using your language model. Use whatever data you computed in
+  train() here.</li>
+</ul>
+
+<h4>Evaluation</h4>
+Your language models will be evaluated on the development data set and a
+held-out test set. The performance of each language model will be evaluated
+with respect to the performance of our solution implementation. To help with
+your implementation, we give you the expected performance of each language
+model on the development set:
+<ul>
+  <li><b>Laplace Unigram Language Model:</b> 0.11</li>
+  <li><b>Laplace Bigram Language Model:</b> 0.13</li>
+  <li><b>Stupid Backoff Language Model:</b>  0.18</li>
+</ul>
+
+<p>
+Note that the performance we expect from your language model is not that great!
+We have provided you with a very simple edit model, not a lot of training data,
+and the task is rather difficult. You will receive full credit for
+implementations which meet the stated thresholds.
+</p>
+
+<h4>Given Code</h4>
+The rest of the scaffolding has been provided (reading corpora, computed edit
+probabilities, computing the argmax correction).  A short summary of the remaining files:
+<ul>
+  <li><b>SpellCorrect.py</b>: Computes the most likely correction given a
+  language model and edit model. The main() function here will load all of your
+  language model and print performance on the development data, useful for
+  debugging. It may be useful to comment out some of the tests in main() when
+  developing.</li>
+  <li><b>EditModel.py</b>: Reads the count_1edit.txt file and computes the
+  probability of corrections. The candidate corrections are all strings within
+  Damerau-Levenshtein edit distance 1. The probability of no correction is set
+  at .9 ( <i>P(x|x) = 0.9</i> ). Note that the EditModel isn't great, but your
+  language models will be evaluated using this model, so it won't effect your
+  grade.</li>
+  <li><b>HolbrookCorpus.py</b>: Reads in the corpus and generates test cases
+  from misspellings.</li>
+  <li><b>Sentence.py</b>: Holds the data for a given sentence, which is a list
+  of Datums. Contains helper functions for generating the correct sentence and
+  the sentence with the spelling error.</li>
+  <li><b>Datum.py</b>: Contains two strings, word and error. The word
+  is the corrected word, and error contains the spelling error. For tokens
+  which are spelled correctly in the corpus, error = ''.</li>
+</ul>
+
+<h4>Running the code</h4>
+
+<p>
+Using Python 3, run:
+
+</p><pre>$ cd src
+$ python3 SpellCorrect.py
+</pre>
+
+
+<h2>HARD MODE</h2>
+
+<p>There's a lot of code here, but the stuff you have to implement is pretty
+straightforward. If that's not tuff enuff for you, here are some ideas.
+
+  <ul>
+  <li><b>Custom Language Model:</b> implement a more sophisticated language
+  model of your choice (note that we haven't discussed these in class!)
+  Ideas include interpolated Kneser-Ney, Good-Turing, linear interpolated,
+  trigram, or any other language model you can come up with.  Your goal is for
+  your custom language model to perform better than any of the other three
+  language models we ask you to implement.</li>
+
+  <li><!--secret hard mode option --></li>
+
+  <li><b>Use more training data</b>: This is the HARD MODE option that I
+  (alexr) would recommend. There really isn't very much training data for the
+  language model here. Maybe you can get better accuracy if you use more text?
+  Questions to answer here include: where to get more text? What format does it
+  need to be in? Will any English text work, or will some work better than
+  others? How much more accuracy did you get for how big of a bigger training
+  corpus?</li>
+
+  <li><b>Use a different programming language</b>: Not enough lambdas? Really
+  wish this was in MIPS assembly or Standard O'Prolog of Moscow? Go for it. But
+  you have to rebuild all the framework code too.
+  </li>
+  </ul>
+
+<h2>turning it in</h2>
+
+<p>Turn in your three language model files (LaplaceUnigramLanguageModel.py,
+LaplaceBigramLanguageModel.py, and StupidBackoffLanguageModel.py), along with a
+text file <tt>hw3.txt</tt>, describing your accuracies, any difficulties you
+had, and whatever HARD MODE extensions (if any -- totally optional!) you ended
+up doing. Use Oncourse! <em>Due on Thursday October 11 at 1:30pm.</em>
+</p>
+
+</body>
+</html>
