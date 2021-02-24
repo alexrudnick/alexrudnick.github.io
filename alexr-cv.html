@@ -1,393 +1,267 @@
-<!doctype html>
-
-<html>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/> 
-  <title>Alex Rudnick: CV</title>
-
-  <style> 
-    body {
-      margin-left: 10em;
-      margin-right: 10em;
-    }
-    h2 { margin-bottom: 0px; }
-    h3 { margin-bottom: 0px; }
-    p {
-      margin-top: 0.5em;
-      margin-left: 1.5em;
-    }
-  </style> 
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>alexr_cv</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+  /*
+   * Copyright 2013 Christophe-Marie Duquesne <chmd@chmd.fr>
+   *
+   * CSS for making a resume with pandoc. Inspired by moderncv.
+   *
+   * This CSS document is delivered to you under the CC BY-SA 3.0 License.
+   * https://creativecommons.org/licenses/by-sa/3.0/deed.en_US
+   */
+  
+  /* Whole document */
+  body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      max-width: 800px;
+      margin: auto;
+      background: #FFFFFF;
+      padding: 10px 10px 10px 10px;
+  }
+  
+  /* Title of the resume */
+  h1 {
+      font-size: 55px;
+      color: #757575;
+      text-align:center;
+      margin-bottom:15px;
+  }
+  /* h1:hover { */
+  /*     background-color: #757575; */
+  /*     color: #FFFFFF; */
+  /*     text-shadow: 1px 1px 1px #333; */
+  /* } */
+  
+  /* Titles of categories */
+  h2 {
+      /* This is called "sectioncolor" in the ConTeXt stylesheet. */
+      color: #397249;
+  }
+  /* There is a bar just before each category */
+  h2:before {
+      content: "";
+      display: inline-block;
+      margin-right:1%;
+      width: 16%;
+      height: 10px;
+      /* This is called "rulecolor" in the ConTeXt stylesheet. */
+      background-color: #9CB770;
+  }
+  /* h2:hover { */
+  /*     background-color: #397249; */
+  /*     color: #FFFFFF; */
+  /*     text-shadow: 1px 1px 1px #333; */
+  /* } */
+  
+  h3:before {
+      content: "";
+      display: inline-block;
+      margin-right:1%;
+      width: 16%;
+      height: 5px;
+      /* This is called "rulecolor" in the ConTeXt stylesheet. */
+      background-color: #9CB770;
+  }
+  
+  h3 {
+      color: #397249;
+  }
+  
+  /* Definitions */
+  dt {
+      font-weight: bold;
+      margin-bottom:14px;
+      margin-right:1.5em;
+      grid-column-start: 1;
+  }
+  dd {
+      margin-bottom:14px;
+      margin-inline-start: 0;
+      grid-column-start: 2;
+  }
+  dl {
+    display: grid;
+    grid-template-columns: 17% auto;
+    /*
+    grid-template-columns: 15% auto;
+    grid-template-rows: 30px 30px;
+    grid-auto-flow: row;
+    grid-column-gap: 50px; */
+  }
+  
+  p {
+      margin-top:0;
+      margin-bottom:7px;
+  }
+  
+  /* Blockquotes */
+  blockquote {
+      text-align: center
+  }
+  
+  /* Links */
+  a {
+      text-decoration: none;
+      color: #397249;
+  }
+  a:hover, a:active {
+      background-color: #397249;
+      color: #FFFFFF;
+      text-decoration: none;
+      text-shadow: 1px 1px 1px #333;
+  }
+  
+  /* Horizontal separators */
+  hr {
+      color: #A6A6A6;
+  }
+  
+  table {
+      width: 100%;
+  }
+  </style>
 </head>
-
 <body>
-
-<h1>Alex Rudnick: CV</h1>
-
-<h2>Interests</h2>
-<p>Machine translation. Human languages. Natural language processing and machine
-learning.  Open Source. Expanding access to the world's information through
-human language technology and education, but moreover, expanding human language
-technology by welcoming people from under-represented groups into the community
-of technologists.</p>
-
-<h2>Education</h2>
-<ul>
-<li>Indiana University, Bloomington IN<br/>
-Ph.D. in Computer Science. August 2009 - December 2018.<br/>
-Research committee: Michael Gasser (co-chair), Sandra Kübler (co-chair),
-Markus Dickinson, David Crandall, John DeNero.<br/>
-</li>
-
-<li> Georgia Institute of Technology, Atlanta GA <br/>
-M.S. in Computer Science. August 2005 - May 2007</li>
-
-<li> Georgia Institute of Technology, Atlanta GA <br/>
-B.S. in Computer Science. High Honors. August 2001 - May 2005</li>
-</ul>
-
-<h2>Professional experience</h2>
-
-<h3>Software Engineer: Google</h3>
-<p>
-<i>Mountain View, September 2014 - August 2020.</i>
-<a href="http://translate.google.com/">Google Translate</a> team at Google
-Research in lovely Mountain View, California. Worked on <a
-href="https://ai.googleblog.com/2020/04/a-scalable-approach-to-reducing-gender.html">reducing
-gender bias by providing multiple translation options</a>, transliteration,
-translation quality evaluation, training data quality estimation, and the
-translation of numbers, measurements and other known entities, among other
-miscellaneous projects.</p>
-
-<h3>Software Engineering Intern: Google</h3>
-<p>
-<i>Mountain View, May to August 2012.</i>
-<a href="http://translate.google.com/">Google Translate</a> team at Google
-Research. Worked on the language identification system in the pipeline for
-training very large language models from the web, so that the text in any given
-web page can be used to train the appropriate language model.
-</p>
-
-<p>
-<i>Mountain View, May to August 2011.</i>
-<a href="http://translate.google.com/">Google Translate</a> team at Google
-Research. Developed Google Translate's phrase-sense disambiguation system, using
-C++, MapReduces, and very large data sets. Also helped develop curriculum for a
-new introductory CS class at Berkeley.
-</p>
-
-<p>
-<i>New York, May to August 2010.</i> Speech team at
-<a href="http://research.google.com/">Google Research</a>.
-Parallelized code to build finite-state transducers, using MapReduce in C++.
-Made small patches to OpenFST. Investigated integrating models of phoneme
-durations with the current weighted-FST based software. Applied speech
-recognition software to the problem of music identification.
-</p>
-
-<h3>Software Engineer: Google</h3>
-<p>
-<i>Atlanta, July 2007 to July 2009.</i> Worked as a software engineer in
-Google's Atlanta office with the
-<a href="http://www.gwtproject.org/">Google Web Toolkit</a> team. Focused on
-user interface components, internationalization and accessibility features.
-Built a new online documentation browser, which was used for the GWT 1.5
-documentation, and can optionally be used with any project hosted on Google Code
-Project Hosting. Helped build and launch the
-<a href="https://developers.google.com/eclipse/">Google Plugin for Eclipse</a>,
-extensions for the popular Eclipse IDE which make it easier for Java developers
-to use GWT and Google App Engine. Maintained documentation, answered questions
-from the community, and built helpful samples in Java and Scala.
-</p>
-
+<h1 id="alex-rudnick">Alex Rudnick</h1>
+<blockquote>
+<p><a href="mailto:givenname.surname@gmail.com" class="email">givenname.surname@gmail.com</a> • <a href="http://alexr.cc" target="_blank">http://alexr.cc</a> • The Bay Area, California</p>
+</blockquote>
+<hr />
+<blockquote>
+<p><strong>Interests:</strong> Machine translation, human languages, natural language processing, education, open source, machine learning. Improving human language technology for under-served language communities by broadening participation in building those technologies.</p>
+</blockquote>
+<hr />
+<h2 id="education">Education</h2>
+<dl>
+<dt>Fall 2009 — Fall 2018</dt>
+<dd><p><strong>PhD, Computer Science</strong>; Indiana University (Bloomington, IN)</p>
+<p><em>Thesis title: <a href="https://scholarworks.iu.edu/dspace/handle/2022/22672" target="_blank">Cross-Lingual Word Sense Disambiguation for Low-Resource Hybrid Machine Translation</a></em><br />
+Research committee: <a href="https://homes.sice.indiana.edu/gasser/" target="_blank">Michael Gasser</a> (co-chair), <a href="https://cl.indiana.edu/~skuebler/" target="_blank">Sandra Kübler</a> (co-chair), <a href="https://cl.indiana.edu/~md7/" target="_blank">Markus Dickinson</a>, <a href="https://homes.luddy.indiana.edu/djcran/" target="_blank">David Crandall</a>, <a href="https://denero.org/" target="_blank">John DeNero</a>.<br />
+<em>Minor: Computational Linguistics</em></p>
+</dd>
+<dt>Fall 2005 — Spring 2007</dt>
+<dd><strong>MS, Computer Science</strong>; Georgia Institute of Technology (Atlanta, GA).
+</dd>
+<dt>Fall 2001 — Spring 2005</dt>
+<dd><strong>BS, Computer Science</strong>; Georgia Institute of Technology (Atlanta, GA). High honors.
+</dd>
+</dl>
+<h2 id="professional-experience">Professional Experience</h2>
+<dl>
+<dt>2014-09 — 2020-08</dt>
+<dd><strong>Software Engineer: Google Translate</strong>. Mountain View, CA. Worked on several different pieces of <a href="http://translate.google.com/" target="_blank">Google Translate</a>, including <a href="https://ai.googleblog.com/2020/04/a-scalable-approach-to-reducing-gender.html" target="_blank">reducing gender bias in translations by providing multiple translation options</a>, translation quality evaluation, transliteration, training data quality estimation, and the translation of numbers, measurements and other known entities, among other miscellaneous projects. Hosted interns and formally mentored other interns. Helped teach machine learning for visiting undergraduates.
+</dd>
+<dt>2007-07 — 2009-07</dt>
+<dd><strong>Software Engineer: Google Web Toolkit</strong>. Atlanta, GA. With the <a href="http://www.gwtproject.org/" target="_blank">Google Web Toolkit</a> team, built UI components as well as internationalization and accessibility features for GWT. Implemented a new online documentation browser for Google Code project hosting, which was used for the GWT 1.5 documentation. Helped build and launch the <a href="https://developers.google.com/eclipse/" target="_blank">Google Plugin for Eclipse</a>, which make it easier for Java developers to use GWT and Google App Engine. Answered questions from the developer community and built helpful samples in Java and Scala.
+</dd>
+</dl>
+<h3 id="internships">Internships</h3>
+<dl>
+<dt>Summer 2012</dt>
+<dd><strong>Software Engineering Intern: Google Translate</strong>. Mountain View, CA. Worked on the language identification system in the pipeline for training large language models from the web, so that the text in any given web page can be used to train the appropriate language model.
+</dd>
+<dt>Summer 2011</dt>
+<dd><strong>Software Engineering Intern: Google Translate</strong>. Mountain View, CA. Developed Google Translate's phrase-sense disambiguation system, which was used to help the translation system pick contextually appropriate words and phrases. Also, with John DeNero, helped develop curriculum for a new introductory CS class at Berkeley.
+</dd>
+<dt>Summer 2010</dt>
+<dd><strong>Software Engineering Intern: Google Research</strong>. New York, NY. Speech team at <a href="http://research.google.com/" target="_blank">Google Research</a>. Parallelized code to build finite-state transducers, using MapReduce in C++. Made small patches to OpenFST. Investigated integrating models of phoneme durations with the current weighted-FST based software. Applied speech recognition software to the problem of music identification.
+</dd>
+</dl>
+<h2 id="teaching">Teaching</h2>
+<h3 id="as-course-instructor">as course instructor</h3>
+<dl>
+<dt>Spring 2019</dt>
+<dd>Google Tech Exchange: Machine Learning. Co-taught an introductory class about machine learning for undergraduates from HBCUs and HSIs on the Google campus. With Olumide Malomo and Sally Goldman.
+</dd>
+<dt>Fall 2012</dt>
+<dd>B490: Natural Language Processing, Indiana University. Taught a special topics course on Natural Language Processing for about thirty undergraduates at Indiana University. Covered basic ideas from linguistics and machine learning, sequence models and tagging, context-free grammars and parsing. Gave overviews of speech recognition and machine translation.
+</dd>
+</dl>
+<h3 id="as-a-teaching-assistant">as a teaching assistant</h3>
+<dl>
+<dt>Fall 2018</dt>
+<dd>Google Tech Exchange: Machine Learning<br />
+Helped run a class on machine learning for undergraduates from HBCUs and HSIs at Google.
+</dd>
+<dt>Spring 2013</dt>
+<dd>B553: Probabilistic Graphical Models, Indiana University<br />
+David Crandall’s class on probabilistic graphical models, covering Bayes Networks, Markov Networks, exact and approximate inference, with applications from computer vision and NLP.
+</dd>
+<dt>Fall 2010</dt>
+<dd>B651: Natural Language Processing, Indiana University.<br />
+Michael Gasser’s introductory NLP course; wrote new homework assignments, introduced the ideas behind automatic speech recognition and grammar extraction.
+</dd>
+<dt>Fall 2009, Spring 2010, Spring 2011</dt>
+<dd>C211: Introduction to Computer Science, Indiana University.<br />
+Indiana University’s introduction class, focusing on functional programming in Scheme. Also wrote class infrastructure software for assigning lab partners and running a student programming contest.
+</dd>
+<dt>Spring 2003, Fall 2003, Spring 2004</dt>
+<dd>CS2130: Languages and Translation, Georgia Tech.<br />
+Georgia Tech’s course covering C programming and basic ideas behind compilers. Wrote new assignments and automatic grading programs.
+</dd>
+</dl>
+<h3 id="other-teaching">other teaching</h3>
+<dl>
+<dt>2013-12</dt>
+<dd>Recurse Center (formerly known as Hacker School). <a href="https://www.recurse.com/residents#Alex-Rudnick" target="_blank">Hacker in Residence</a>. Met with Recurse Center students, had discussions and pair programming sessions on their projects, and gave talks and workshops about NLP.
+</dd>
+<dt><em>Summers 2005, 2006, 2007.</em></dt>
+<dd>Institute for Computing Education, Georgia Tech. Media Computation summer camp at Georgia Tech. Taught high- and middle-school students media concepts and basic programming with Python, Alice, and Scratch. Had fun adventures around campus. For Summer 2006, helped teach Media Computation workshops for high school computer science teachers.
+</dd>
+</dl>
 <h2 id="pubs">Publications, tech reports, and workshop presentations</h2>
 <ul>
-
-<li>Clayton A. Davis, Giovanni Luca Ciampaglia, Luca Maria Aiello, Keychul Chung,
-Michael D. Conover, Emilio Ferrara, Alessandro Flammini, Geoffrey C. Fox,
-Xiaoming Gao, Bruno Gonçalves, Przemyslaw A.  Grabowicz, Kibeom Hong, Pik-Mai
-Hui, Scott McCaulay, Karissa McKelvey, Mark R. Meiss, Snehal Patil, Chathuri
-Peli Kankanamalage, Valentin Pentchev, Judy Qiu, Jacob Ratkiewicz, <b>Alex
-Rudnick</b>, Benjamin Serrette, Prashant Shiralkar, Onur Varol, Lilian Weng,
-Tak-Lon Wu, Andrew J. Younge, Filippo Menczer.
-<cite>OSoMe: the IUNI observatory on social media</cite>. PeerJ Computer
-Science, October 2016.
-<a href="https://peerj.com/articles/cs-87/">web</a>
-<a href="https://peerj.com/articles/cs-87.pdf">pdf</a>
-<a href="https://peerj.com/articles/cs-87.bib">bibtex</a>
-</li>
-
-<li>Yonghui Wu, Mike Schuster, Zhifeng Chen, Quoc V. Le, Mohammad Norouzi,
-Wolfgang Macherey, Maxim Krikun, Yuan Cao, Qin Gao, Klaus Macherey, Jeff
-Klingner, Apurva Shah, Melvin Johnson, Xiaobing Liu, Łukasz Kaiser, Stephan
-Gouws, Yoshikiyo Kato, Taku Kudo, Hideto Kazawa, Keith Stevens, George Kurian,
-Nishant Patil, Wei Wang, Cliff Young, Jason Smith, Jason Riesa, <b>Alex
-Rudnick</b>, Oriol Vinyals, Greg Corrado, Macduff Hughes, Jeffrey Dean.
-<cite>Google's Neural Machine Translation System: Bridging the Gap between
-Human and Machine Translation</cite>. Google tech report released on arXiv,
-September 2016.
-<a href="https://arxiv.org/abs/1609.08144">web</a>
-<a href="https://arxiv.org/pdf/1609.08144v2.pdf">pdf</a>
-</li>
-
-<li><b>Alex Rudnick</b>, Levi King, Can Liu, Markus Dickinson and Sandra Kübler.
-<cite>IUCL: Combining Information Sources for SemEval Task 5</cite>.
-Proceedings of the 8th International Workshop on Semantic Evaluation
-(SemEval 2014).
-<a href="http://alt.qcri.org/semeval2014/cdrom/pdf/SemEval2014060.pdf">pdf</a>
-<a href="http://alt.qcri.org/semeval2014/cdrom/bib/SemEval060.bib">bibtex</a>
-</li>
-
-<li><b>Alex Rudnick</b>, Taylor Skidmore, Alberto Samaniego and Michael Gasser.
-<cite>Guampa: a Toolkit for Collaborative Translation</cite>.
-Ninth International Conference on Language Resources and Evaluation (LREC 2014).
-<a href="http://www.lrec-conf.org/proceedings/lrec2014/pdf/151_Paper.pdf">pdf</a>
-<a href="http://www.lrec-conf.org/proceedings/lrec2014/summaries/151.html">summary with bibtex</a>
-</li>
-
-<li><b>Alex Rudnick</b>, Annette Rios and Michael Gasser.
-<cite>Enhancing a Rule-Based MT System with Cross-Lingual WSD</cite>.
-The 9th International Workshop of the Special Interest Group on Speech and
-Language Technology for Minority Languages (SaLTMiL 2014).
-<a href="http://www.lrec-conf.org/proceedings/lrec2014/workshops/LREC2014Workshop-SALTMIL%20Proceedings.pdf">workshop proceedings</a>
-</li>
-
-<li><b>Alex Rudnick</b> and Michael Gasser.
-<cite>Lexical Selection for Hybrid MT with Sequence Labeling</cite>.
-Second Workshop on Hybrid Approaches to Translation
-(HyTra 2013).
-<a href="http://www.aclweb.org/anthology/W/W13/W13-2815.pdf">pdf</a>
-<a href="http://www.aclweb.org/anthology/W/W13/W13-2815.bib">bibtex</a>
-</li>
-
-<li><b>Alex Rudnick</b>, Can Liu and Michael Gasser.
-<cite>HLTDI: CL-WSD Using Markov Random Fields for SemEval-2013 Task
-10</cite>.
-Proceedings of the 7th International Workshop on Semantic Evaluation
-(SemEval 2013).
-<a href="http://www.aclweb.org/anthology/S/S13/S13-2031.pdf">pdf</a>
-<a href="http://www.aclweb.org/anthology/S/S13/S13-2031.bib">bibtex</a>
-</li>
-
-<li>Pavel Golik, Boulos Harb, Ananya Misra, Michael Riley, <b>Alex Rudnick</b>
-and Eugene Weinstein. <cite>Mobile Music Modeling, Analysis and
-Recognition</cite>. International Conference on Acoustics, Speech, and
-Signal Processing (ICASSP) 2012.
-<a href="http://research.google.com/pubs/pub37754.html">abstract</a>
-<a href="http://research.google.com/pubs/archive/37754.pdf">pdf</a>
-<a href="http://www-i6.informatik.rwth-aachen.de/publications/singlebibtex.php?id=772">bibtex</a>
-</li>
-
-<li>Karissa McKelvey, <b>Alex Rudnick</b>, Michael Conover and Filippo Menczer.
-<cite>Visualizations of Communication on Social Media: Making Big Data
-Accessible</cite>. Computer Supported Cooperative Work 2012 - Collective
-Intelligence as Community Discourse and Action.
-<a href="http://events.kmi.open.ac.uk/cscw-ci2012/wp-content/uploads/2012/02/McKelvey-cscw12-w3.pdf">pdf</a>
-</li>
-
-<li><b>Alex Rudnick</b>.
-<cite>Towards Cross-Language Word Sense Disambiguation for Quechua.</cite>
-RANLP 2011 Student Research Workshop.
-<a href="http://aclweb.org/anthology-new/R/R11/R11-2021.pdf">pdf</a>
-<a href="http://aclweb.org/anthology-new/R/R11/R11-2021.bib">bibtex</a>
-</li>
-
-<li><b>Alex Rudnick</b>. <cite>A resource-light approach to learning verb
-valencies</cite>. Machine Translation and Morphologically-rich Languages
-2011.
-<a href="http://www.mt-archive.info/MTMRL-2011-Rudnick.pdf">pdf</a>
-<a href="http://www.mt-archive.info/MTMRL-2011-Rudnick-ppt.pdf">slides</a>
-</li>
-
-<li>James Clawson, Kent Lyons, <b>Alex Rudnick</b>, Robert A. Iannucci Jr. and
-Thad Starner. <cite>Automatic whiteout++: correcting mini-QWERTY typing errors
-using keypress timing</cite>. In CHI'08: Proceeding of the twenty-sixth annual
-SIGCHI conference on Human factors in computing systems, pages 573-582.
-<a href="http://www.cs.indiana.edu/~alexr/pubs/automatic-whiteout++_CHI08.pdf">pdf</a>
-<a href="http://www.cs.indiana.edu/~alexr/pubs/automatic-whiteout-CHI08.bibtex.txt">bibtex</a>
-</li>
-
-<li>James Clawson, <b>Alex Rudnick</b>, Kent Lyons and Thad Starner.
-<cite>Automatic Whiteout: Discovery and Correction of Typographical Errors in
-Mobile Text Input</cite>. In MobileHCI'07: Proceedings of the 9th conference on
-Human-computer interaction with mobile devices and services.
-<a href="http://www.cs.indiana.edu/~alexr/pubs/automatic-whiteout_mobileHCI07.pdf">pdf</a> 
-<a href="http://www.cs.indiana.edu/~alexr/pubs/automatic-whiteout-mobileHCI07.bibtex.txt">bibtex</a>
-</li>
+<li>Clayton A. Davis, Giovanni Luca Ciampaglia, Luca Maria Aiello, Keychul Chung, Michael D. Conover, Emilio Ferrara, Alessandro Flammini, Geoffrey C. Fox, Xiaoming Gao, Bruno Gonçalves, Przemyslaw A. Grabowicz, Kibeom Hong, Pik-Mai Hui, Scott McCaulay, Karissa McKelvey, Mark R. Meiss, Snehal Patil, Chathuri Peli Kankanamalage, Valentin Pentchev, Judy Qiu, Jacob Ratkiewicz, <strong>Alex Rudnick</strong>, Benjamin Serrette, Prashant Shiralkar, Onur Varol, Lilian Weng, Tak-Lon Wu, Andrew J. Younge, Filippo Menczer. <strong>OSoMe: the IUNI observatory on social media</strong>. PeerJ Computer Science, October 2016. <a href="https://peerj.com/articles/cs-87/" target="_blank">web</a> <a href="https://peerj.com/articles/cs-87.pdf" target="_blank">pdf</a> <a href="https://peerj.com/articles/cs-87.bib" target="_blank">bibtex</a></li>
+<li>Yonghui Wu, Mike Schuster, Zhifeng Chen, Quoc V. Le, Mohammad Norouzi, Wolfgang Macherey, Maxim Krikun, Yuan Cao, Qin Gao, Klaus Macherey, Jeff Klingner, Apurva Shah, Melvin Johnson, Xiaobing Liu, Łukasz Kaiser, Stephan Gouws, Yoshikiyo Kato, Taku Kudo, Hideto Kazawa, Keith Stevens, George Kurian, Nishant Patil, Wei Wang, Cliff Young, Jason Smith, Jason Riesa, <strong>Alex Rudnick</strong>, Oriol Vinyals, Greg Corrado, Macduff Hughes, Jeffrey Dean. <strong>Google's Neural Machine Translation System: Bridging the Gap between Human and Machine Translation</strong>. Google tech report released on arXiv, September 2016. <a href="https://arxiv.org/abs/1609.08144" target="_blank">web</a> <a href="https://arxiv.org/pdf/1609.08144v2.pdf" target="_blank">pdf</a></li>
+<li><strong>Alex Rudnick</strong>, Levi King, Can Liu, Markus Dickinson and Sandra Kübler. <strong>IUCL: Combining Information Sources for SemEval Task 5</strong>. Proceedings of the 8th International Workshop on Semantic Evaluation (SemEval 2014). <a href="http://alt.qcri.org/semeval2014/cdrom/pdf/SemEval2014060.pdf" target="_blank">pdf</a> <a href="http://alt.qcri.org/semeval2014/cdrom/bib/SemEval060.bib" target="_blank">bibtex</a></li>
+<li><strong>Alex Rudnick</strong>, Taylor Skidmore, Alberto Samaniego and Michael Gasser. <strong>Guampa: a Toolkit for Collaborative Translation</strong>. Ninth International Conference on Language Resources and Evaluation (LREC 2014). <a href="http://www.lrec-conf.org/proceedings/lrec2014/pdf/151_Paper.pdf" target="_blank">pdf</a> <a href="http://www.lrec-conf.org/proceedings/lrec2014/summaries/151.html" target="_blank">summary with bibtex</a></li>
+<li><strong>Alex Rudnick</strong>, Annette Rios and Michael Gasser. <strong>Enhancing a Rule-Based MT System with Cross-Lingual WSD</strong>. The 9th International Workshop of the Special Interest Group on Speech and Language Technology for Minority Languages (SaLTMiL 2014). <a href="http://www.lrec-conf.org/proceedings/lrec2014/workshops/LREC2014Workshop-SALTMIL%20Proceedings.pdf" target="_blank">workshop proceedings</a></li>
+<li><strong>Alex Rudnick</strong> and Michael Gasser. <strong>Lexical Selection for Hybrid MT with Sequence Labeling</strong>. Second Workshop on Hybrid Approaches to Translation (HyTra 2013). <a href="http://www.aclweb.org/anthology/W/W13/W13-2815.pdf" target="_blank">pdf</a> <a href="http://www.aclweb.org/anthology/W/W13/W13-2815.bib" target="_blank">bibtex</a></li>
+<li><strong>Alex Rudnick</strong>, Can Liu and Michael Gasser. <strong>HLTDI: CL-WSD Using Markov Random Fields for SemEval-2013 Task 10</strong>. Proceedings of the 7th International Workshop on Semantic Evaluation (SemEval 2013). <a href="http://www.aclweb.org/anthology/S/S13/S13-2031.pdf" target="_blank">pdf</a> <a href="http://www.aclweb.org/anthology/S/S13/S13-2031.bib" target="_blank">bibtex</a></li>
+<li>Pavel Golik, Boulos Harb, Ananya Misra, Michael Riley, <strong>Alex Rudnick</strong> and Eugene Weinstein. <strong>Mobile Music Modeling, Analysis and Recognition</strong>. International Conference on Acoustics, Speech, and Signal Processing (ICASSP) 2012. <a href="http://research.google.com/pubs/pub37754.html" target="_blank">abstract</a> <a href="http://research.google.com/pubs/archive/37754.pdf" target="_blank">pdf</a> <a href="http://www-i6.informatik.rwth-aachen.de/publications/singlebibtex.php?id=772" target="_blank">bibtex</a></li>
+<li>Karissa McKelvey, <strong>Alex Rudnick</strong>, Michael Conover and Filippo Menczer. <strong>Visualizations of Communication on Social Media: Making Big Data Accessible</strong>. Computer Supported Cooperative Work 2012 - Collective Intelligence as Community Discourse and Action. <a href="http://events.kmi.open.ac.uk/cscw-ci2012/wp-content/uploads/2012/02/McKelvey-cscw12-w3.pdf" target="_blank">pdf</a></li>
+<li><strong>Alex Rudnick</strong>. <strong>Towards Cross-Language Word Sense Disambiguation for Quechua</strong>. RANLP 2011 Student Research Workshop. <a href="http://aclweb.org/anthology-new/R/R11/R11-2021.pdf" target="_blank">pdf</a> <a href="http://aclweb.org/anthology-new/R/R11/R11-2021.bib" target="_blank">bibtex</a></li>
+<li><strong>Alex Rudnick</strong>. <strong>A resource-light approach to learning verb valencies</strong>. Machine Translation and Morphologically-rich Languages
+<ol start="2011" type="1">
+<li><a href="http://www.mt-archive.info/MTMRL-2011-Rudnick.pdf" target="_blank">pdf</a> <a href="http://www.mt-archive.info/MTMRL-2011-Rudnick-ppt.pdf" target="_blank">slides</a></li>
+</ol></li>
+<li>James Clawson, Kent Lyons, <strong>Alex Rudnick</strong>, Robert A. Iannucci Jr. and Thad Starner. <strong>Automatic whiteout++: correcting mini-QWERTY typing errors using keypress timing</strong>. In CHI'08: Proceeding of the twenty-sixth annual SIGCHI conference on Human factors in computing systems, pages 573-582. <a href="https://alexrudnick.github.io/pubs/automatic-whiteout++_CHI08.pdf" target="_blank">pdf</a> <a href="https://alexrudnick.github.io/pubs/automatic-whiteout-CHI08.bibtex.txt" target="_blank">bibtex</a></li>
+<li>James Clawson, <strong>Alex Rudnick</strong>, Kent Lyons and Thad Starner. <strong>Automatic Whiteout: Discovery and Correction of Typographical Errors in Mobile Text Input</strong>. In MobileHCI'07: Proceedings of the 9th conference on Human-computer interaction with mobile devices and services. <a href="https://alexrudnick.github.io/pubs/automatic-whiteout_mobileHCI07.pdf" target="_blank">pdf</a> <a href="https://alexrudnick.github.io/pubs/automatic-whiteout-mobileHCI07.bibtex.txt" target="_blank">bibtex</a></li>
 </ul>
-
-<h2>Teaching</h2>
-
-<h3>Course Instructor</h3>
-<dl>
-  <dt>Google Tech Exchange: Machine Learning</dt>
-  <dd>
-  <i>Spring 2019.</i> Co-teaching an introductory class about machine
-  learning for undergraduates from HBCUs and HSIs who are spending a school
-  year in Silicon Valley!</dd>
-
-  <dt>B490: Natural Language Processing, Indiana University</dt>
-  <dd>
-<i>Fall 2012.</i> Taught a special topics course on Natural Language Processing
-for about thirty undergraduates at Indiana University. Covered basic ideas from
-linguistics and machine learning, sequence models and tagging, context-free
-grammars and parsing. Gave overviews of speech recognition and machine
-translation.
-  </dd>
-</dl>
-
-<h3>Teaching Assistant</h3>
-<dl>
-
-<dt>Google Tech Exchange: Machine Learning</dt>
-<dd><i>Fall 2018.</i>
-Helped run a class on machine learning for undergraduates from HBCUs and HSIs
-at Google.
-</dd>
-
-<dt>B553: Probabilistic Graphical Models, Indiana University</dt>
-<dd><i>Spring 2013.</i>
-David Crandall's class on probabilistic graphical models, covering Bayes
-Networks, Markov Networks, exact and approximate inference on them, and some
-applications from computer vision and NLP.
-</dd>
-
-<dt>B651: Natural Language Processing, Indiana University</dt>
-<dd><i>Fall 2010.</i>
-Michael Gasser's introductory NLP course; wrote some new homework assignments,
-introduced the ideas behind automatic speech recognition and grammar extraction.
-</dd>
-
-<dt>C211: Introduction to Computer Science, Indiana University</dt>
-<dd><i>Fall 2009, Spring 2010, Spring 2011.</i>
-Gave weekly discussions, lab sections, and well-attended office hours for
-Indiana's introductory CS class in Scheme. Wrote class-infrastructure software,
-including a web application to assign lab partners and a system to manage
-student programming contests.</dd>
-
-<dt>CS2130: Languages and Translation, Georgia Tech</dt>
-<dd><i>Spring 2003, Fall 2003, Spring 2004.</i>
-Georgia Tech's course covering C programming and basic ideas behind compilers.
-Wrote new assignments and automatic grading programs, including an auto-grader
-that could distinguish non-recursive, recursive, and tail-recursive solutions.
-Taught weekly recitations and review sessions.
-</dd>
-</dl>
-
-<h3>Other Teaching</h3>
-<dl>
-<dt>Recurse Center (formerly known as Hacker School)</dt>
-<dd><i>December 2013.</i>
-<a href="https://www.recurse.com/residents#Alex-Rudnick">
-Hacker in Residence.</a> Met with Hacker School students, had discussions and
-pair programming sessions on their projects, and gave talks and workshops about
-NLP.
-</dd>
-
-<dt>Institute for Computing Education, Georgia Tech</dt>
-<dd>
-<i>Summers 2005, 2006, 2007.</i>
-Media Computation summer camp at Georgia Tech. Taught high- and middle-school
-students media concepts and basic programming with Python, Alice, and Scratch.
-Played frisbee and went on scavenger hunts around the campus. For Summer 2006,
-helped teach Media Computation workshops for high school computer science
-teachers.
-</dd>
-</dl>
-
-<h2>Professional service and Open Source contributions</h2>
+<h2 id="professional-service-and-open-source-contributions">Professional service and Open Source contributions</h2>
 <ul>
-  <li>Project member and committer for <a href="http://nltk.org">NLTK</a>, the
-  Natural Language Toolkit</li>
-  <li>Reviewer: LREC 2020, LREC 2018, COLING 2016, LREC 2014, SemEval 2013, ACL
-  2012, CICLing 2011, COLING 2010, CIKM 2009</li>
-  <li>Many miscellaneous FOSS contributions: please see my
-  <a href="https://github.com/alexrudnick">GitHub</a> and
-  <a href="https://code.google.com/u/alex.rudnick/">Google Code</a> profiles.
-  </li>
+<li>Project member and committer for <a href="http://nltk.org" target="_blank">NLTK</a>, the Natural Language Toolkit</li>
+<li>Reviewer: AfricaNLP 2021, LREC 2020, LREC 2018, COLING 2016, LREC 2014, SemEval 2013, ACL 2012, CICLing 2011, COLING 2010, CIKM 2009</li>
+<li>Many miscellaneous FOSS contributions: please see <a href="https://github.com/alexrudnick" target="_blank">my GitHub profile</a></li>
 </ul>
-
-<h2>Patents</h2>
+<h2 id="patents">Patents</h2>
 <ul>
-<li>Wei Wang, Bowen Liang, Macduff Hughes, Taro Watanabe, Tetsuji Nakagawa,
-<b>Alexander Rudnick</b>.
-<cite>Contrastive Sequence-to-Sequence Data Selector</cite>. <a
-href="https://patents.google.com/patent/US20190347570A1">US Patent
-US20190347570A1</a>, pending.
-</li>
-<li>Eugene Weinstein, Boulos Harb, Anaya Misra, Michael Dennis Riley, Pavel
-Golik, <b>Alex Rudnick</b>.
-<cite>Systems and methods for identifying music in a noisy environment</cite>.
-<a href="https://patents.google.com/patent/US8965766B1">US Patent
-US8965766B1</a>, active.
-</li>
+<li>Wei Wang, Bowen Liang, Macduff Hughes, Taro Watanabe, Tetsuji Nakagawa, <strong>Alexander Rudnick</strong>. <strong>Contrastive Sequence-to-Sequence Data Selector</strong>. <a href="https://patents.google.com/patent/US20190347570A1" target="_blank">US Patent US20190347570A1</a>, pending.</li>
+<li>Eugene Weinstein, Boulos Harb, Anaya Misra, Michael Dennis Riley, Pavel Golik, <strong>Alex Rudnick</strong>. <strong>Systems and methods for identifying music in a noisy environment</strong>. <a href="https://patents.google.com/patent/US8965766B1" target="_blank">US Patent US8965766B1</a>, active.</li>
 </ul>
-
-<h2>Other research experience</h2>
-
-<h3>Center for Complex Networks and Systems Research (CNetS)</h3>
-<p>
-<i>Fall 2011 to Spring 2012.</i>
-With the Center for Complex Networks and Systems Research (CNetS), helped
-develop Truthy, a web-based system for analyzing and visualizing the diffusion
-of information on Twitter, particularly political content.
-</p>
-
-<h3>Contextual Computing Group</h3>
-<p>
-<i>Fall 2006 to Summer 2007.</i>
-For Thad Starner's Contextual Computing Group, developed classifiers for
-finding typographical errors made on mobile QWERTY keyboards, particularly
-accidentally repeated keystrokes and near-misses. The classifiers take into
-account letter frequencies, n-gram frequencies, keypress timing information,
-and keyboard layout.
-</p>
-
-<h3>Contextualized Support for Learning lab</h3>
-<p>
-<i>Fall 2006 to Spring 2007.</i>
-With Mark Guzdial, helped develop JES, the Jython Environment for Students.
-Added functionality for LOGO-style turtles and animations, improved speed,
-usability, maintainability of code and documentation. Occasionally filled in
-giving lectures for Mark's CS 1 and 2 classes.
-</p>
-
-<h3>Adaptive Personal Information Environments group</h3>
-<p>
-<i>Spring 2006 to Spring 2007.</i>
-With Graham Coleman and Charles Isbell, worked on SWIMM, a software music-player
-that uses machine learning to model the listener's preferences and play songs in
-an appropriate order, based on signal features extracted from the songs and
-their ID3 metadata. Updated the interface and functionality to convert between
-sound formats, helped clean up existing code.
-</p>
-
-<h3>Learning By Design group</h3>
-<p>
-<i>Summer 2005 to Spring 2006.</i>
-Built web applications for Janet Kolodner's
-<a href="http://home.cc.gatech.edu/ksi">Kitchen Science Investigators</a>
-project, a study on teaching children science concepts through cooking. This
-included software to help children easily upload images from digital cameras
-and manage their online lab notebooks.
-</p>
-
-<h3>Electronic Learning Communities group</h3>
-<p>
-<i>Fall 2001 to Fall 2002.</i>
-Worked on Amy Bruckman's
-<a href="http://www.cc.gatech.edu/elc/moose-crossing/">MOOSE Crossing</a>,
-a text-based online world for teaching children programming concepts. Helped
-develop the world, the server code, and the related curriculum. Spoke to the
-community, often in person; made weekly visits to local after-school Computer
-Clubhouses.
-</p>
-
-<h2>Extracurriculars</h2>
-<p>
-Distance running (12 marathons so far), yoga, juggling, cycling. Playing the
-drums. Reading philosophy, history, linguistics, popular science, and a lot of
-news.
-</p>
-
+<h2 id="other-research-experience">Other research experience</h2>
+<ul>
+<li><p><strong>Center for Complex Networks and Systems Research (CNetS)</strong>. <em>Fall 2011 to Spring 2012.</em> With the Center for Complex Networks and Systems Research (CNetS), helped develop Truthy, a web-based system for analyzing and visualizing the diffusion of information on Twitter, particularly political content.</p></li>
+<li><p><strong>Contextual Computing Group</strong>. <em>Fall 2006 to Summer 2007.</em> For Thad Starner's Contextual Computing Group, developed classifiers for finding typographical errors made on mobile QWERTY keyboards, particularly accidentally repeated keystrokes and near-misses. The classifiers take into account letter frequencies, n-gram frequencies, keypress timing information, and keyboard layout.</p></li>
+<li><p><strong>Contextualized Support for Learning lab</strong>. <em>Fall 2006 to Spring 2007.</em> With Mark Guzdial, helped develop JES, the Jython Environment for Students. Added functionality for LOGO-style turtles and animations, improved speed, usability, maintainability of code and documentation. Occasionally filled in giving lectures for Dr. Guzdial's CS 1 and 2 classes.</p></li>
+<li><p><strong>Adaptive Personal Information Environments group</strong>. <em>Spring 2006 to Spring 2007.</em> With Graham Coleman and Charles Isbell, worked on SWIMM, a software music-player that uses machine learning to model the listener's preferences and play songs in an appropriate order, based on signal features extracted from the songs and their ID3 metadata. Updated the interface and functionality to convert between sound formats, helped clean up existing code.</p></li>
+<li><p><strong>Learning By Design group</strong>. <em>Summer 2005 to Spring 2006.</em> Built web applications for Janet Kolodner's Kitchen Science Investigators project, a study on teaching children science concepts through cooking. This included software to help children easily upload images from digital cameras and manage their online lab notebooks.</p></li>
+<li><p><strong>Electronic Learning Communities group</strong>. <em>Fall 2001 to Fall 2002.</em> Worked on Amy Bruckman's <a href="https://web.archive.org/web/20130731000809/http://www.cc.gatech.edu/elc/moose-crossing/aboutus.html" target="_blank">MOOSE Crossing</a>, a text-based online world for teaching children programming concepts. Helped develop the world and the server code and interacted with the community. Made weekly visits to local after-school Computer Clubhouses in Atlanta.</p></li>
+</ul>
+<hr />
+<blockquote>
+<p><a href="mailto:givenname.surname@gmail.com" class="email">givenname.surname@gmail.com</a> • <a href="http://alexr.cc" target="_blank">http://alexr.cc</a> • The Bay Area, California</p>
+</blockquote>
 </body>
 </html>
